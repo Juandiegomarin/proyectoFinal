@@ -11,7 +11,7 @@ import javax.persistence.Embeddable;
 
 /**
  *
- * @author juandi
+ * @author Juan Diego
  */
 @Embeddable
 public class HabilidadPokemonPK implements Serializable {
@@ -73,7 +73,7 @@ public class HabilidadPokemonPK implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.HabilidadPokemonPK[ idHabilidad=" + idHabilidad + ", idPokemon=" + idPokemon + " ]";
+        return "entities.HabilidadpokemonPK[ idHabilidad=" + idHabilidad + ", idPokemon=" + idPokemon + " ]";
     }
     
 }

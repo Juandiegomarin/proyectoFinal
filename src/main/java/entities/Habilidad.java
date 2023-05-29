@@ -10,6 +10,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -18,7 +20,7 @@ import javax.persistence.Table;
 
 /**
  *
- * @author juandi
+ * @author Juan Diego
  */
 @Entity
 @Table(name = "habilidad")
@@ -31,6 +33,7 @@ public class Habilidad implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idHabilidad")
     private Integer idHabilidad;
@@ -39,7 +42,7 @@ public class Habilidad implements Serializable {
     @Column(name = "descripcion")
     private String descripcion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "habilidad")
-    private List<HabilidadPokemon> habilidadPokemonList;
+    private List<HabilidadPokemon> habilidadpokemonList;
 
     public Habilidad() {
     }
@@ -72,12 +75,12 @@ public class Habilidad implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public List<HabilidadPokemon> getHabilidadPokemonList() {
-        return habilidadPokemonList;
+    public List<HabilidadPokemon> getHabilidadpokemonList() {
+        return habilidadpokemonList;
     }
 
-    public void setHabilidadPokemonList(List<HabilidadPokemon> habilidadPokemonList) {
-        this.habilidadPokemonList = habilidadPokemonList;
+    public void setHabilidadpokemonList(List<HabilidadPokemon> habilidadpokemonList) {
+        this.habilidadpokemonList = habilidadpokemonList;
     }
 
     @Override

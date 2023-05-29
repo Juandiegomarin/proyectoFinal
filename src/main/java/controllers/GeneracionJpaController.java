@@ -5,7 +5,6 @@
 package controllers;
 
 import controllers.exceptions.NonexistentEntityException;
-import controllers.exceptions.PreexistingEntityException;
 import entities.Generacion;
 import java.io.Serializable;
 import javax.persistence.Query;
@@ -20,7 +19,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author juandi
+ * @author Juan Diego
  */
 public class GeneracionJpaController implements Serializable {
 
@@ -33,7 +32,7 @@ public class GeneracionJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Generacion generacion) throws PreexistingEntityException, Exception {
+    public void create(Generacion generacion) {
         if (generacion.getPokemonList() == null) {
             generacion.setPokemonList(new ArrayList<Pokemon>());
         }
@@ -58,11 +57,6 @@ public class GeneracionJpaController implements Serializable {
                 }
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findGeneracion(generacion.getNumeroGeneracion()) != null) {
-                throw new PreexistingEntityException("Generacion " + generacion + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -75,7 +69,7 @@ public class GeneracionJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Generacion persistentGeneracion = em.find(Generacion.class, generacion.getNumeroGeneracion());
+            Generacion persistentGeneracion = em.find(Generacion.class, generacion.getIdGeneracion());
             List<Pokemon> pokemonListOld = persistentGeneracion.getPokemonList();
             List<Pokemon> pokemonListNew = generacion.getPokemonList();
             List<Pokemon> attachedPokemonListNew = new ArrayList<Pokemon>();
@@ -107,7 +101,7 @@ public class GeneracionJpaController implements Serializable {
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                Integer id = generacion.getNumeroGeneracion();
+                Integer id = generacion.getIdGeneracion();
                 if (findGeneracion(id) == null) {
                     throw new NonexistentEntityException("The generacion with id " + id + " no longer exists.");
                 }
@@ -128,7 +122,7 @@ public class GeneracionJpaController implements Serializable {
             Generacion generacion;
             try {
                 generacion = em.getReference(Generacion.class, id);
-                generacion.getNumeroGeneracion();
+                generacion.getIdGeneracion();
             } catch (EntityNotFoundException enfe) {
                 throw new NonexistentEntityException("The generacion with id " + id + " no longer exists.", enfe);
             }

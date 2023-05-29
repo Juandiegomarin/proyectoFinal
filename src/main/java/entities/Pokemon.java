@@ -10,6 +10,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,13 +22,14 @@ import javax.persistence.Table;
 
 /**
  *
- * @author juandi
+ * @author Juan Diego
  */
 @Entity
 @Table(name = "pokemon")
 @NamedQueries({
     @NamedQuery(name = "Pokemon.findAll", query = "SELECT p FROM Pokemon p"),
     @NamedQuery(name = "Pokemon.findByIdPokemon", query = "SELECT p FROM Pokemon p WHERE p.idPokemon = :idPokemon"),
+    @NamedQuery(name= "Pokemon.deleteAll", query ="DELETE from Pokemon"),
     @NamedQuery(name = "Pokemon.findByNumeroPokedex", query = "SELECT p FROM Pokemon p WHERE p.numeroPokedex = :numeroPokedex"),
     @NamedQuery(name = "Pokemon.findByNombre", query = "SELECT p FROM Pokemon p WHERE p.nombre = :nombre"),
     @NamedQuery(name = "Pokemon.findByTipo1", query = "SELECT p FROM Pokemon p WHERE p.tipo1 = :tipo1"),
@@ -35,6 +38,7 @@ public class Pokemon implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idPokemon")
     private Integer idPokemon;
@@ -44,25 +48,19 @@ public class Pokemon implements Serializable {
     private String nombre;
     @Column(name = "tipo1")
     private String tipo1;
-    @Basic(optional = false)
     @Column(name = "tipo2")
     private String tipo2;
-    @JoinColumn(name = "generacion", referencedColumnName = "numeroGeneracion")
+    @JoinColumn(name = "generacion", referencedColumnName = "idGeneracion")
     @ManyToOne
     private Generacion generacion;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pokemon")
-    private List<HabilidadPokemon> habilidadPokemonList;
+    private List<HabilidadPokemon> habilidadpokemonList;
 
     public Pokemon() {
     }
 
     public Pokemon(Integer idPokemon) {
         this.idPokemon = idPokemon;
-    }
-
-    public Pokemon(Integer idPokemon, String tipo2) {
-        this.idPokemon = idPokemon;
-        this.tipo2 = tipo2;
     }
 
     public Integer getIdPokemon() {
@@ -113,12 +111,12 @@ public class Pokemon implements Serializable {
         this.generacion = generacion;
     }
 
-    public List<HabilidadPokemon> getHabilidadPokemonList() {
-        return habilidadPokemonList;
+    public List<HabilidadPokemon> getHabilidadpokemonList() {
+        return habilidadpokemonList;
     }
 
-    public void setHabilidadPokemonList(List<HabilidadPokemon> habilidadPokemonList) {
-        this.habilidadPokemonList = habilidadPokemonList;
+    public void setHabilidadpokemonList(List<HabilidadPokemon> habilidadpokemonList) {
+        this.habilidadpokemonList = habilidadpokemonList;
     }
 
     @Override

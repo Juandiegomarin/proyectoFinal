@@ -16,20 +16,20 @@ import javax.persistence.Table;
 
 /**
  *
- * @author juandi
+ * @author Juan Diego
  */
 @Entity
-@Table(name = "habilidadPokemon")
+@Table(name = "habilidadpokemon")
 @NamedQueries({
-    @NamedQuery(name = "HabilidadPokemon.findAll", query = "SELECT h FROM HabilidadPokemon h"),
-    @NamedQuery(name = "HabilidadPokemon.findByIdHabilidad", query = "SELECT h FROM HabilidadPokemon h WHERE h.habilidadPokemonPK.idHabilidad = :idHabilidad"),
-    @NamedQuery(name = "HabilidadPokemon.findByIdPokemon", query = "SELECT h FROM HabilidadPokemon h WHERE h.habilidadPokemonPK.idPokemon = :idPokemon"),
-    @NamedQuery(name = "HabilidadPokemon.findByOculta", query = "SELECT h FROM HabilidadPokemon h WHERE h.oculta = :oculta")})
+    @NamedQuery(name = "Habilidadpokemon.findAll", query = "SELECT h FROM HabilidadPokemon h"),
+    @NamedQuery(name = "Habilidadpokemon.findByIdHabilidad", query = "SELECT h FROM HabilidadPokemon h WHERE h.habilidadpokemonPK.idHabilidad = :idHabilidad"),
+    @NamedQuery(name = "Habilidadpokemon.findByIdPokemon", query = "SELECT h FROM HabilidadPokemon h WHERE h.habilidadpokemonPK.idPokemon = :idPokemon"),
+    @NamedQuery(name = "Habilidadpokemon.findByOculta", query = "SELECT h FROM HabilidadPokemon h WHERE h.oculta = :oculta")})
 public class HabilidadPokemon implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
-    protected HabilidadPokemonPK habilidadPokemonPK;
+    protected HabilidadPokemonPK habilidadpokemonPK;
     @Column(name = "oculta")
     private Boolean oculta;
     @JoinColumn(name = "idHabilidad", referencedColumnName = "idHabilidad", insertable = false, updatable = false)
@@ -42,20 +42,20 @@ public class HabilidadPokemon implements Serializable {
     public HabilidadPokemon() {
     }
 
-    public HabilidadPokemon(HabilidadPokemonPK habilidadPokemonPK) {
-        this.habilidadPokemonPK = habilidadPokemonPK;
+    public HabilidadPokemon(HabilidadPokemonPK habilidadpokemonPK) {
+        this.habilidadpokemonPK = habilidadpokemonPK;
     }
 
     public HabilidadPokemon(int idHabilidad, int idPokemon) {
-        this.habilidadPokemonPK = new HabilidadPokemonPK(idHabilidad, idPokemon);
+        this.habilidadpokemonPK = new HabilidadPokemonPK(idHabilidad, idPokemon);
     }
 
-    public HabilidadPokemonPK getHabilidadPokemonPK() {
-        return habilidadPokemonPK;
+    public HabilidadPokemonPK getHabilidadpokemonPK() {
+        return habilidadpokemonPK;
     }
 
-    public void setHabilidadPokemonPK(HabilidadPokemonPK habilidadPokemonPK) {
-        this.habilidadPokemonPK = habilidadPokemonPK;
+    public void setHabilidadpokemonPK(HabilidadPokemonPK habilidadpokemonPK) {
+        this.habilidadpokemonPK = habilidadpokemonPK;
     }
 
     public Boolean getOculta() {
@@ -85,7 +85,7 @@ public class HabilidadPokemon implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (habilidadPokemonPK != null ? habilidadPokemonPK.hashCode() : 0);
+        hash += (habilidadpokemonPK != null ? habilidadpokemonPK.hashCode() : 0);
         return hash;
     }
 
@@ -96,7 +96,7 @@ public class HabilidadPokemon implements Serializable {
             return false;
         }
         HabilidadPokemon other = (HabilidadPokemon) object;
-        if ((this.habilidadPokemonPK == null && other.habilidadPokemonPK != null) || (this.habilidadPokemonPK != null && !this.habilidadPokemonPK.equals(other.habilidadPokemonPK))) {
+        if ((this.habilidadpokemonPK == null && other.habilidadpokemonPK != null) || (this.habilidadpokemonPK != null && !this.habilidadpokemonPK.equals(other.habilidadpokemonPK))) {
             return false;
         }
         return true;
@@ -104,7 +104,7 @@ public class HabilidadPokemon implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.HabilidadPokemon[ habilidadPokemonPK=" + habilidadPokemonPK + " ]";
+        return "entities.Habilidadpokemon[ habilidadpokemonPK=" + habilidadpokemonPK + " ]";
     }
     
 }

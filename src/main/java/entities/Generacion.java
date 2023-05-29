@@ -7,8 +7,11 @@ package entities;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -17,12 +20,13 @@ import javax.persistence.Table;
 
 /**
  *
- * @author juandi
+ * @author Juan Diego
  */
 @Entity
 @Table(name = "generacion")
 @NamedQueries({
     @NamedQuery(name = "Generacion.findAll", query = "SELECT g FROM Generacion g"),
+    @NamedQuery(name = "Generacion.findByIdGeneracion", query = "SELECT g FROM Generacion g WHERE g.idGeneracion = :idGeneracion"),
     @NamedQuery(name = "Generacion.findByNumeroGeneracion", query = "SELECT g FROM Generacion g WHERE g.numeroGeneracion = :numeroGeneracion"),
     @NamedQuery(name = "Generacion.findByNumeroPokemon", query = "SELECT g FROM Generacion g WHERE g.numeroPokemon = :numeroPokemon"),
     @NamedQuery(name = "Generacion.findByNombreRegion", query = "SELECT g FROM Generacion g WHERE g.nombreRegion = :nombreRegion")})
@@ -30,7 +34,10 @@ public class Generacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
+    @Column(name = "idGeneracion")
+    private Integer idGeneracion;
     @Column(name = "numeroGeneracion")
     private Integer numeroGeneracion;
     @Column(name = "numeroPokemon")
@@ -43,8 +50,16 @@ public class Generacion implements Serializable {
     public Generacion() {
     }
 
-    public Generacion(Integer numeroGeneracion) {
-        this.numeroGeneracion = numeroGeneracion;
+    public Generacion(Integer idGeneracion) {
+        this.idGeneracion = idGeneracion;
+    }
+
+    public Integer getIdGeneracion() {
+        return idGeneracion;
+    }
+
+    public void setIdGeneracion(Integer idGeneracion) {
+        this.idGeneracion = idGeneracion;
     }
 
     public Integer getNumeroGeneracion() {
@@ -82,7 +97,7 @@ public class Generacion implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (numeroGeneracion != null ? numeroGeneracion.hashCode() : 0);
+        hash += (idGeneracion != null ? idGeneracion.hashCode() : 0);
         return hash;
     }
 
@@ -93,7 +108,7 @@ public class Generacion implements Serializable {
             return false;
         }
         Generacion other = (Generacion) object;
-        if ((this.numeroGeneracion == null && other.numeroGeneracion != null) || (this.numeroGeneracion != null && !this.numeroGeneracion.equals(other.numeroGeneracion))) {
+        if ((this.idGeneracion == null && other.idGeneracion != null) || (this.idGeneracion != null && !this.idGeneracion.equals(other.idGeneracion))) {
             return false;
         }
         return true;
@@ -101,7 +116,7 @@ public class Generacion implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.Generacion[ numeroGeneracion=" + numeroGeneracion + " ]";
+        return  ""+idGeneracion;
     }
     
 }

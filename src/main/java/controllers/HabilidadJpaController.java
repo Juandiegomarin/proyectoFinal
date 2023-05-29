@@ -6,7 +6,6 @@ package controllers;
 
 import controllers.exceptions.IllegalOrphanException;
 import controllers.exceptions.NonexistentEntityException;
-import controllers.exceptions.PreexistingEntityException;
 import entities.Habilidad;
 import java.io.Serializable;
 import javax.persistence.Query;
@@ -21,7 +20,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author juandi
+ * @author Juan Diego
  */
 public class HabilidadJpaController implements Serializable {
 
@@ -34,36 +33,31 @@ public class HabilidadJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Habilidad habilidad) throws PreexistingEntityException, Exception {
-        if (habilidad.getHabilidadPokemonList() == null) {
-            habilidad.setHabilidadPokemonList(new ArrayList<HabilidadPokemon>());
+    public void create(Habilidad habilidad) {
+        if (habilidad.getHabilidadpokemonList() == null) {
+            habilidad.setHabilidadpokemonList(new ArrayList<HabilidadPokemon>());
         }
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            List<HabilidadPokemon> attachedHabilidadPokemonList = new ArrayList<HabilidadPokemon>();
-            for (HabilidadPokemon habilidadPokemonListHabilidadPokemonToAttach : habilidad.getHabilidadPokemonList()) {
-                habilidadPokemonListHabilidadPokemonToAttach = em.getReference(habilidadPokemonListHabilidadPokemonToAttach.getClass(), habilidadPokemonListHabilidadPokemonToAttach.getHabilidadPokemonPK());
-                attachedHabilidadPokemonList.add(habilidadPokemonListHabilidadPokemonToAttach);
+            List<HabilidadPokemon> attachedHabilidadpokemonList = new ArrayList<HabilidadPokemon>();
+            for (HabilidadPokemon habilidadpokemonListHabilidadpokemonToAttach : habilidad.getHabilidadpokemonList()) {
+                habilidadpokemonListHabilidadpokemonToAttach = em.getReference(habilidadpokemonListHabilidadpokemonToAttach.getClass(), habilidadpokemonListHabilidadpokemonToAttach.getHabilidadpokemonPK());
+                attachedHabilidadpokemonList.add(habilidadpokemonListHabilidadpokemonToAttach);
             }
-            habilidad.setHabilidadPokemonList(attachedHabilidadPokemonList);
+            habilidad.setHabilidadpokemonList(attachedHabilidadpokemonList);
             em.persist(habilidad);
-            for (HabilidadPokemon habilidadPokemonListHabilidadPokemon : habilidad.getHabilidadPokemonList()) {
-                Habilidad oldHabilidadOfHabilidadPokemonListHabilidadPokemon = habilidadPokemonListHabilidadPokemon.getHabilidad();
-                habilidadPokemonListHabilidadPokemon.setHabilidad(habilidad);
-                habilidadPokemonListHabilidadPokemon = em.merge(habilidadPokemonListHabilidadPokemon);
-                if (oldHabilidadOfHabilidadPokemonListHabilidadPokemon != null) {
-                    oldHabilidadOfHabilidadPokemonListHabilidadPokemon.getHabilidadPokemonList().remove(habilidadPokemonListHabilidadPokemon);
-                    oldHabilidadOfHabilidadPokemonListHabilidadPokemon = em.merge(oldHabilidadOfHabilidadPokemonListHabilidadPokemon);
+            for (HabilidadPokemon habilidadpokemonListHabilidadpokemon : habilidad.getHabilidadpokemonList()) {
+                Habilidad oldHabilidadOfHabilidadpokemonListHabilidadpokemon = habilidadpokemonListHabilidadpokemon.getHabilidad();
+                habilidadpokemonListHabilidadpokemon.setHabilidad(habilidad);
+                habilidadpokemonListHabilidadpokemon = em.merge(habilidadpokemonListHabilidadpokemon);
+                if (oldHabilidadOfHabilidadpokemonListHabilidadpokemon != null) {
+                    oldHabilidadOfHabilidadpokemonListHabilidadpokemon.getHabilidadpokemonList().remove(habilidadpokemonListHabilidadpokemon);
+                    oldHabilidadOfHabilidadpokemonListHabilidadpokemon = em.merge(oldHabilidadOfHabilidadpokemonListHabilidadpokemon);
                 }
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findHabilidad(habilidad.getIdHabilidad()) != null) {
-                throw new PreexistingEntityException("Habilidad " + habilidad + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -77,36 +71,36 @@ public class HabilidadJpaController implements Serializable {
             em = getEntityManager();
             em.getTransaction().begin();
             Habilidad persistentHabilidad = em.find(Habilidad.class, habilidad.getIdHabilidad());
-            List<HabilidadPokemon> habilidadPokemonListOld = persistentHabilidad.getHabilidadPokemonList();
-            List<HabilidadPokemon> habilidadPokemonListNew = habilidad.getHabilidadPokemonList();
+            List<HabilidadPokemon> habilidadpokemonListOld = persistentHabilidad.getHabilidadpokemonList();
+            List<HabilidadPokemon> habilidadpokemonListNew = habilidad.getHabilidadpokemonList();
             List<String> illegalOrphanMessages = null;
-            for (HabilidadPokemon habilidadPokemonListOldHabilidadPokemon : habilidadPokemonListOld) {
-                if (!habilidadPokemonListNew.contains(habilidadPokemonListOldHabilidadPokemon)) {
+            for (HabilidadPokemon habilidadpokemonListOldHabilidadpokemon : habilidadpokemonListOld) {
+                if (!habilidadpokemonListNew.contains(habilidadpokemonListOldHabilidadpokemon)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
                     }
-                    illegalOrphanMessages.add("You must retain HabilidadPokemon " + habilidadPokemonListOldHabilidadPokemon + " since its habilidad field is not nullable.");
+                    illegalOrphanMessages.add("You must retain Habilidadpokemon " + habilidadpokemonListOldHabilidadpokemon + " since its habilidad field is not nullable.");
                 }
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);
             }
-            List<HabilidadPokemon> attachedHabilidadPokemonListNew = new ArrayList<HabilidadPokemon>();
-            for (HabilidadPokemon habilidadPokemonListNewHabilidadPokemonToAttach : habilidadPokemonListNew) {
-                habilidadPokemonListNewHabilidadPokemonToAttach = em.getReference(habilidadPokemonListNewHabilidadPokemonToAttach.getClass(), habilidadPokemonListNewHabilidadPokemonToAttach.getHabilidadPokemonPK());
-                attachedHabilidadPokemonListNew.add(habilidadPokemonListNewHabilidadPokemonToAttach);
+            List<HabilidadPokemon> attachedHabilidadpokemonListNew = new ArrayList<HabilidadPokemon>();
+            for (HabilidadPokemon habilidadpokemonListNewHabilidadpokemonToAttach : habilidadpokemonListNew) {
+                habilidadpokemonListNewHabilidadpokemonToAttach = em.getReference(habilidadpokemonListNewHabilidadpokemonToAttach.getClass(), habilidadpokemonListNewHabilidadpokemonToAttach.getHabilidadpokemonPK());
+                attachedHabilidadpokemonListNew.add(habilidadpokemonListNewHabilidadpokemonToAttach);
             }
-            habilidadPokemonListNew = attachedHabilidadPokemonListNew;
-            habilidad.setHabilidadPokemonList(habilidadPokemonListNew);
+            habilidadpokemonListNew = attachedHabilidadpokemonListNew;
+            habilidad.setHabilidadpokemonList(habilidadpokemonListNew);
             habilidad = em.merge(habilidad);
-            for (HabilidadPokemon habilidadPokemonListNewHabilidadPokemon : habilidadPokemonListNew) {
-                if (!habilidadPokemonListOld.contains(habilidadPokemonListNewHabilidadPokemon)) {
-                    Habilidad oldHabilidadOfHabilidadPokemonListNewHabilidadPokemon = habilidadPokemonListNewHabilidadPokemon.getHabilidad();
-                    habilidadPokemonListNewHabilidadPokemon.setHabilidad(habilidad);
-                    habilidadPokemonListNewHabilidadPokemon = em.merge(habilidadPokemonListNewHabilidadPokemon);
-                    if (oldHabilidadOfHabilidadPokemonListNewHabilidadPokemon != null && !oldHabilidadOfHabilidadPokemonListNewHabilidadPokemon.equals(habilidad)) {
-                        oldHabilidadOfHabilidadPokemonListNewHabilidadPokemon.getHabilidadPokemonList().remove(habilidadPokemonListNewHabilidadPokemon);
-                        oldHabilidadOfHabilidadPokemonListNewHabilidadPokemon = em.merge(oldHabilidadOfHabilidadPokemonListNewHabilidadPokemon);
+            for (HabilidadPokemon habilidadpokemonListNewHabilidadpokemon : habilidadpokemonListNew) {
+                if (!habilidadpokemonListOld.contains(habilidadpokemonListNewHabilidadpokemon)) {
+                    Habilidad oldHabilidadOfHabilidadpokemonListNewHabilidadpokemon = habilidadpokemonListNewHabilidadpokemon.getHabilidad();
+                    habilidadpokemonListNewHabilidadpokemon.setHabilidad(habilidad);
+                    habilidadpokemonListNewHabilidadpokemon = em.merge(habilidadpokemonListNewHabilidadpokemon);
+                    if (oldHabilidadOfHabilidadpokemonListNewHabilidadpokemon != null && !oldHabilidadOfHabilidadpokemonListNewHabilidadpokemon.equals(habilidad)) {
+                        oldHabilidadOfHabilidadpokemonListNewHabilidadpokemon.getHabilidadpokemonList().remove(habilidadpokemonListNewHabilidadpokemon);
+                        oldHabilidadOfHabilidadpokemonListNewHabilidadpokemon = em.merge(oldHabilidadOfHabilidadpokemonListNewHabilidadpokemon);
                     }
                 }
             }
@@ -140,12 +134,12 @@ public class HabilidadJpaController implements Serializable {
                 throw new NonexistentEntityException("The habilidad with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            List<HabilidadPokemon> habilidadPokemonListOrphanCheck = habilidad.getHabilidadPokemonList();
-            for (HabilidadPokemon habilidadPokemonListOrphanCheckHabilidadPokemon : habilidadPokemonListOrphanCheck) {
+            List<HabilidadPokemon> habilidadpokemonListOrphanCheck = habilidad.getHabilidadpokemonList();
+            for (HabilidadPokemon habilidadpokemonListOrphanCheckHabilidadpokemon : habilidadpokemonListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }
-                illegalOrphanMessages.add("This Habilidad (" + habilidad + ") cannot be destroyed since the HabilidadPokemon " + habilidadPokemonListOrphanCheckHabilidadPokemon + " in its habilidadPokemonList field has a non-nullable habilidad field.");
+                illegalOrphanMessages.add("This Habilidad (" + habilidad + ") cannot be destroyed since the Habilidadpokemon " + habilidadpokemonListOrphanCheckHabilidadpokemon + " in its habilidadpokemonList field has a non-nullable habilidad field.");
             }
             if (illegalOrphanMessages != null) {
                 throw new IllegalOrphanException(illegalOrphanMessages);

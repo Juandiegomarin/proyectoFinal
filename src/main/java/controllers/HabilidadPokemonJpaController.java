@@ -21,7 +21,7 @@ import javax.persistence.EntityManagerFactory;
 
 /**
  *
- * @author juandi
+ * @author Juan Diego
  */
 public class HabilidadPokemonJpaController implements Serializable {
 
@@ -34,39 +34,39 @@ public class HabilidadPokemonJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(HabilidadPokemon habilidadPokemon) throws PreexistingEntityException, Exception {
-        if (habilidadPokemon.getHabilidadPokemonPK() == null) {
-            habilidadPokemon.setHabilidadPokemonPK(new HabilidadPokemonPK());
+    public void create(HabilidadPokemon habilidadpokemon) throws PreexistingEntityException, Exception {
+        if (habilidadpokemon.getHabilidadpokemonPK() == null) {
+            habilidadpokemon.setHabilidadpokemonPK(new HabilidadPokemonPK());
         }
-        habilidadPokemon.getHabilidadPokemonPK().setIdHabilidad(habilidadPokemon.getHabilidad().getIdHabilidad());
-        habilidadPokemon.getHabilidadPokemonPK().setIdPokemon(habilidadPokemon.getPokemon().getIdPokemon());
+        habilidadpokemon.getHabilidadpokemonPK().setIdHabilidad(habilidadpokemon.getHabilidad().getIdHabilidad());
+        habilidadpokemon.getHabilidadpokemonPK().setIdPokemon(habilidadpokemon.getPokemon().getIdPokemon());
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            Habilidad habilidad = habilidadPokemon.getHabilidad();
+            Habilidad habilidad = habilidadpokemon.getHabilidad();
             if (habilidad != null) {
                 habilidad = em.getReference(habilidad.getClass(), habilidad.getIdHabilidad());
-                habilidadPokemon.setHabilidad(habilidad);
+                habilidadpokemon.setHabilidad(habilidad);
             }
-            Pokemon pokemon = habilidadPokemon.getPokemon();
+            Pokemon pokemon = habilidadpokemon.getPokemon();
             if (pokemon != null) {
                 pokemon = em.getReference(pokemon.getClass(), pokemon.getIdPokemon());
-                habilidadPokemon.setPokemon(pokemon);
+                habilidadpokemon.setPokemon(pokemon);
             }
-            em.persist(habilidadPokemon);
+            em.persist(habilidadpokemon);
             if (habilidad != null) {
-                habilidad.getHabilidadPokemonList().add(habilidadPokemon);
+                habilidad.getHabilidadpokemonList().add(habilidadpokemon);
                 habilidad = em.merge(habilidad);
             }
             if (pokemon != null) {
-                pokemon.getHabilidadPokemonList().add(habilidadPokemon);
+                pokemon.getHabilidadpokemonList().add(habilidadpokemon);
                 pokemon = em.merge(pokemon);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
-            if (findHabilidadPokemon(habilidadPokemon.getHabilidadPokemonPK()) != null) {
-                throw new PreexistingEntityException("HabilidadPokemon " + habilidadPokemon + " already exists.", ex);
+            if (findHabilidadpokemon(habilidadpokemon.getHabilidadpokemonPK()) != null) {
+                throw new PreexistingEntityException("Habilidadpokemon " + habilidadpokemon + " already exists.", ex);
             }
             throw ex;
         } finally {
@@ -76,50 +76,50 @@ public class HabilidadPokemonJpaController implements Serializable {
         }
     }
 
-    public void edit(HabilidadPokemon habilidadPokemon) throws NonexistentEntityException, Exception {
-        habilidadPokemon.getHabilidadPokemonPK().setIdHabilidad(habilidadPokemon.getHabilidad().getIdHabilidad());
-        habilidadPokemon.getHabilidadPokemonPK().setIdPokemon(habilidadPokemon.getPokemon().getIdPokemon());
+    public void edit(HabilidadPokemon habilidadpokemon) throws NonexistentEntityException, Exception {
+        habilidadpokemon.getHabilidadpokemonPK().setIdHabilidad(habilidadpokemon.getHabilidad().getIdHabilidad());
+        habilidadpokemon.getHabilidadpokemonPK().setIdPokemon(habilidadpokemon.getPokemon().getIdPokemon());
         EntityManager em = null;
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            HabilidadPokemon persistentHabilidadPokemon = em.find(HabilidadPokemon.class, habilidadPokemon.getHabilidadPokemonPK());
-            Habilidad habilidadOld = persistentHabilidadPokemon.getHabilidad();
-            Habilidad habilidadNew = habilidadPokemon.getHabilidad();
-            Pokemon pokemonOld = persistentHabilidadPokemon.getPokemon();
-            Pokemon pokemonNew = habilidadPokemon.getPokemon();
+            HabilidadPokemon persistentHabilidadpokemon = em.find(HabilidadPokemon.class, habilidadpokemon.getHabilidadpokemonPK());
+            Habilidad habilidadOld = persistentHabilidadpokemon.getHabilidad();
+            Habilidad habilidadNew = habilidadpokemon.getHabilidad();
+            Pokemon pokemonOld = persistentHabilidadpokemon.getPokemon();
+            Pokemon pokemonNew = habilidadpokemon.getPokemon();
             if (habilidadNew != null) {
                 habilidadNew = em.getReference(habilidadNew.getClass(), habilidadNew.getIdHabilidad());
-                habilidadPokemon.setHabilidad(habilidadNew);
+                habilidadpokemon.setHabilidad(habilidadNew);
             }
             if (pokemonNew != null) {
                 pokemonNew = em.getReference(pokemonNew.getClass(), pokemonNew.getIdPokemon());
-                habilidadPokemon.setPokemon(pokemonNew);
+                habilidadpokemon.setPokemon(pokemonNew);
             }
-            habilidadPokemon = em.merge(habilidadPokemon);
+            habilidadpokemon = em.merge(habilidadpokemon);
             if (habilidadOld != null && !habilidadOld.equals(habilidadNew)) {
-                habilidadOld.getHabilidadPokemonList().remove(habilidadPokemon);
+                habilidadOld.getHabilidadpokemonList().remove(habilidadpokemon);
                 habilidadOld = em.merge(habilidadOld);
             }
             if (habilidadNew != null && !habilidadNew.equals(habilidadOld)) {
-                habilidadNew.getHabilidadPokemonList().add(habilidadPokemon);
+                habilidadNew.getHabilidadpokemonList().add(habilidadpokemon);
                 habilidadNew = em.merge(habilidadNew);
             }
             if (pokemonOld != null && !pokemonOld.equals(pokemonNew)) {
-                pokemonOld.getHabilidadPokemonList().remove(habilidadPokemon);
+                pokemonOld.getHabilidadpokemonList().remove(habilidadpokemon);
                 pokemonOld = em.merge(pokemonOld);
             }
             if (pokemonNew != null && !pokemonNew.equals(pokemonOld)) {
-                pokemonNew.getHabilidadPokemonList().add(habilidadPokemon);
+                pokemonNew.getHabilidadpokemonList().add(habilidadpokemon);
                 pokemonNew = em.merge(pokemonNew);
             }
             em.getTransaction().commit();
         } catch (Exception ex) {
             String msg = ex.getLocalizedMessage();
             if (msg == null || msg.length() == 0) {
-                HabilidadPokemonPK id = habilidadPokemon.getHabilidadPokemonPK();
-                if (findHabilidadPokemon(id) == null) {
-                    throw new NonexistentEntityException("The habilidadPokemon with id " + id + " no longer exists.");
+                HabilidadPokemonPK id = habilidadpokemon.getHabilidadpokemonPK();
+                if (findHabilidadpokemon(id) == null) {
+                    throw new NonexistentEntityException("The habilidadpokemon with id " + id + " no longer exists.");
                 }
             }
             throw ex;
@@ -135,24 +135,24 @@ public class HabilidadPokemonJpaController implements Serializable {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            HabilidadPokemon habilidadPokemon;
+            HabilidadPokemon habilidadpokemon;
             try {
-                habilidadPokemon = em.getReference(HabilidadPokemon.class, id);
-                habilidadPokemon.getHabilidadPokemonPK();
+                habilidadpokemon = em.getReference(HabilidadPokemon.class, id);
+                habilidadpokemon.getHabilidadpokemonPK();
             } catch (EntityNotFoundException enfe) {
-                throw new NonexistentEntityException("The habilidadPokemon with id " + id + " no longer exists.", enfe);
+                throw new NonexistentEntityException("The habilidadpokemon with id " + id + " no longer exists.", enfe);
             }
-            Habilidad habilidad = habilidadPokemon.getHabilidad();
+            Habilidad habilidad = habilidadpokemon.getHabilidad();
             if (habilidad != null) {
-                habilidad.getHabilidadPokemonList().remove(habilidadPokemon);
+                habilidad.getHabilidadpokemonList().remove(habilidadpokemon);
                 habilidad = em.merge(habilidad);
             }
-            Pokemon pokemon = habilidadPokemon.getPokemon();
+            Pokemon pokemon = habilidadpokemon.getPokemon();
             if (pokemon != null) {
-                pokemon.getHabilidadPokemonList().remove(habilidadPokemon);
+                pokemon.getHabilidadpokemonList().remove(habilidadpokemon);
                 pokemon = em.merge(pokemon);
             }
-            em.remove(habilidadPokemon);
+            em.remove(habilidadpokemon);
             em.getTransaction().commit();
         } finally {
             if (em != null) {
@@ -161,15 +161,15 @@ public class HabilidadPokemonJpaController implements Serializable {
         }
     }
 
-    public List<HabilidadPokemon> findHabilidadPokemonEntities() {
-        return findHabilidadPokemonEntities(true, -1, -1);
+    public List<HabilidadPokemon> findHabilidadpokemonEntities() {
+        return findHabilidadpokemonEntities(true, -1, -1);
     }
 
-    public List<HabilidadPokemon> findHabilidadPokemonEntities(int maxResults, int firstResult) {
-        return findHabilidadPokemonEntities(false, maxResults, firstResult);
+    public List<HabilidadPokemon> findHabilidadpokemonEntities(int maxResults, int firstResult) {
+        return findHabilidadpokemonEntities(false, maxResults, firstResult);
     }
 
-    private List<HabilidadPokemon> findHabilidadPokemonEntities(boolean all, int maxResults, int firstResult) {
+    private List<HabilidadPokemon> findHabilidadpokemonEntities(boolean all, int maxResults, int firstResult) {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
@@ -185,7 +185,7 @@ public class HabilidadPokemonJpaController implements Serializable {
         }
     }
 
-    public HabilidadPokemon findHabilidadPokemon(HabilidadPokemonPK id) {
+    public HabilidadPokemon findHabilidadpokemon(HabilidadPokemonPK id) {
         EntityManager em = getEntityManager();
         try {
             return em.find(HabilidadPokemon.class, id);
@@ -194,7 +194,7 @@ public class HabilidadPokemonJpaController implements Serializable {
         }
     }
 
-    public int getHabilidadPokemonCount() {
+    public int getHabilidadpokemonCount() {
         EntityManager em = getEntityManager();
         try {
             CriteriaQuery cq = em.getCriteriaBuilder().createQuery();

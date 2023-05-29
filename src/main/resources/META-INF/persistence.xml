@@ -7,10 +7,10 @@
     <class>entities.Generacion</class>
     <class>entities.Habilidad</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.56.101:3306/proyectoFinal?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
-      <property name="javax.persistence.jdbc.user" value="juandi"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/proyectoFinal?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
+      <property name="javax.persistence.jdbc.user" value="root"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-      <property name="javax.persistence.jdbc.password" value="dieguichi2002"/>
+      <property name="javax.persistence.jdbc.password" value=""/>
     </properties>
   </persistence-unit>
 </persistence>
