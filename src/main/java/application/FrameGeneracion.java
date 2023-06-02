@@ -4,7 +4,9 @@
  */
 package application;
 
-import controllers.PokemonJpaController;
+
+import controllers.GeneracionJpaController;
+import entities.Generacion;
 import entities.Pokemon;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
@@ -15,31 +17,31 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Juan Diego
  */
-public class FramePokemon extends javax.swing.JFrame {
+public class FrameGeneracion extends javax.swing.JFrame {
 
     /**
      * Creates new form FramePokemon
      */
-    public FramePokemon() {
+    public FrameGeneracion() {
         initComponents();
         
-        listaPokemon.setEnabled(false);
+        listaGen.setEnabled(false);
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("pokemon");
 
-        PokemonJpaController pc = new PokemonJpaController(emf);
-        List<Pokemon> pokemons = pc.findPokemonEntities();
+        GeneracionJpaController gc = new GeneracionJpaController(emf);
+        List<Generacion> gens = gc.findGeneracionEntities();
 
         DefaultTableModel m = new DefaultTableModel();
 
-        m.setColumnIdentifiers(new String[]{" Pokemon ID "," Generacion "," Numero Pokedex ", " Nombre "," Tipo 1 "," Tipo 2 "});
-        for (Pokemon p : pokemons) {
+        m.setColumnIdentifiers(new String[]{" Generacion ID "," Numero Generacion "," Numero de Pokemon ", " Nombre Generacion "});
+        for (Generacion g : gens) {
             
-            Object[] objetos = {p.getIdPokemon(),p.getGeneracion(),p.getNumeroPokedex(),p.getNombre(),p.getTipo1(),p.getTipo2()};
+            Object[] objetos = {g.getIdGeneracion(),g.getNumeroGeneracion(),g.getNumeroPokemon(),g.getNombreRegion()};
             m.addRow(objetos);
         }
 
-        listaPokemon.setModel(m);
-        listaPokemon.setVisible(true);
+        listaGen.setModel(m);
+        listaGen.setVisible(true);
     }
 
     /**
@@ -52,33 +54,33 @@ public class FramePokemon extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        addPokemon = new javax.swing.JButton();
-        updatePokemon = new javax.swing.JButton();
-        deletePokemon = new javax.swing.JButton();
+        addGen = new javax.swing.JButton();
+        updateGen = new javax.swing.JButton();
+        deleteGen = new javax.swing.JButton();
         botonVolver = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        listaPokemon = new javax.swing.JTable();
+        listaGen = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        addPokemon.setText("Añadir");
-        addPokemon.addActionListener(new java.awt.event.ActionListener() {
+        addGen.setText("Añadir");
+        addGen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addPokemonActionPerformed(evt);
+                addGenActionPerformed(evt);
             }
         });
 
-        updatePokemon.setText("Modificar");
-        updatePokemon.addActionListener(new java.awt.event.ActionListener() {
+        updateGen.setText("Modificar");
+        updateGen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                updatePokemonActionPerformed(evt);
+                updateGenActionPerformed(evt);
             }
         });
 
-        deletePokemon.setText("Borrar");
-        deletePokemon.addActionListener(new java.awt.event.ActionListener() {
+        deleteGen.setText("Borrar");
+        deleteGen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                deletePokemonActionPerformed(evt);
+                deleteGenActionPerformed(evt);
             }
         });
 
@@ -89,7 +91,7 @@ public class FramePokemon extends javax.swing.JFrame {
             }
         });
 
-        listaPokemon.setModel(new javax.swing.table.DefaultTableModel(
+        listaGen.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -100,7 +102,7 @@ public class FramePokemon extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(listaPokemon);
+        jScrollPane1.setViewportView(listaGen);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -111,13 +113,13 @@ public class FramePokemon extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(74, 74, 74)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(deletePokemon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(updatePokemon, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
-                            .addComponent(addPokemon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(deleteGen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(updateGen, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE)
+                            .addComponent(addGen, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(161, 161, 161)
                         .addComponent(botonVolver)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 63, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 69, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 853, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(43, 43, 43))
         );
@@ -128,11 +130,11 @@ public class FramePokemon extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jScrollPane1)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(addPokemon, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(addGen, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(96, 96, 96)
-                        .addComponent(updatePokemon, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(updateGen, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(100, 100, 100)
-                        .addComponent(deletePokemon, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(deleteGen, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(119, 119, 119)
                         .addComponent(botonVolver)))
                 .addContainerGap(119, Short.MAX_VALUE))
@@ -142,13 +144,13 @@ public class FramePokemon extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
@@ -163,26 +165,26 @@ public class FramePokemon extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_botonVolverActionPerformed
 
-    private void addPokemonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPokemonActionPerformed
-        FramePokemonAdd fp = new FramePokemonAdd();
-        fp.setVisible(true);
-        System.out.println(fp);
+    private void addGenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addGenActionPerformed
+        FrameGeneracionAdd fg = new FrameGeneracionAdd();
+        fg.setVisible(true);
+        System.out.println(fg);
         this.dispose();
-    }//GEN-LAST:event_addPokemonActionPerformed
+    }//GEN-LAST:event_addGenActionPerformed
 
-    private void deletePokemonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletePokemonActionPerformed
-        FramePokemonDelete fd= new FramePokemonDelete();
+    private void deleteGenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteGenActionPerformed
+        FrameGeneracionDelete fd= new FrameGeneracionDelete();
         fd.setVisible(true);
         System.out.println(fd);
         this.dispose();
-    }//GEN-LAST:event_deletePokemonActionPerformed
+    }//GEN-LAST:event_deleteGenActionPerformed
 
-    private void updatePokemonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updatePokemonActionPerformed
-        FramePokemonUpdate fu = new FramePokemonUpdate();
+    private void updateGenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateGenActionPerformed
+        FrameGeneracionUpdate fu = new FrameGeneracionUpdate();
         fu.setVisible(true);
         System.out.println(fu);
         this.dispose();
-    }//GEN-LAST:event_updatePokemonActionPerformed
+    }//GEN-LAST:event_updateGenActionPerformed
 
     /**
      * @param args the command line arguments
@@ -201,31 +203,32 @@ public class FramePokemon extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FramePokemon.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameGeneracion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FramePokemon.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameGeneracion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FramePokemon.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameGeneracion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FramePokemon.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(FrameGeneracion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new FramePokemon().setVisible(true);
+                new FrameGeneracion().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addPokemon;
+    private javax.swing.JButton addGen;
     private javax.swing.JButton botonVolver;
-    private javax.swing.JButton deletePokemon;
+    private javax.swing.JButton deleteGen;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable listaPokemon;
-    private javax.swing.JButton updatePokemon;
+    private javax.swing.JTable listaGen;
+    private javax.swing.JButton updateGen;
     // End of variables declaration//GEN-END:variables
 }

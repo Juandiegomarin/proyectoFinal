@@ -26,47 +26,39 @@ public class FramePokemonAdd extends javax.swing.JFrame {
      */
     public FramePokemonAdd() {
         initComponents();
-        
+
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("pokemon");
-        
-        
-        JScrollPanel1.setEnabled(false);
-        
+
+        listaPokemon.setEnabled(false);
 
         PokemonJpaController pc = new PokemonJpaController(emf);
         List<Pokemon> pokemons = pc.findPokemonEntities();
 
         DefaultTableModel m = new DefaultTableModel();
 
-        m.setColumnIdentifiers(new String[]{" Pokemon ID "," Generacion "," Numero Pokedex ", " Nombre "," Tipo 1 "," Tipo 2 "});
+        m.setColumnIdentifiers(new String[]{" Pokemon ID ", " Generacion ", " Numero Pokedex ", " Nombre ", " Tipo 1 ", " Tipo 2 "});
         for (Pokemon p : pokemons) {
-            
-            Object[] objetos = {p.getIdPokemon(),p.getGeneracion(),p.getNumeroPokedex(),p.getNombre(),p.getTipo1(),p.getTipo2()};
+
+            Object[] objetos = {p.getIdPokemon(), p.getGeneracion(), p.getNumeroPokedex(), p.getNombre(), p.getTipo1(), p.getTipo2()};
             m.addRow(objetos);
         }
 
         listaPokemon.setModel(m);
         listaPokemon.setVisible(true);
-        
-        
-        
+
         GeneracionJpaController gc = new GeneracionJpaController(emf);
-        
-        List<Generacion> l =gc.findGeneracionEntities();
-        
-        DefaultComboBoxModel modelo= new DefaultComboBoxModel();
-        
+
+        List<Generacion> l = gc.findGeneracionEntities().stream().sorted((o1, o2) -> o1.getNumeroGeneracion().compareTo(o2.getNumeroGeneracion())).toList();
+
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+
         for (Generacion g : l) {
-            
-            modelo.addElement("Numero: "+g.getNumeroGeneracion()+" Nombre: "+g.getNombreRegion());
+
+            modelo.addElement("Numero: " + g.getNumeroGeneracion() + " Nombre: " + g.getNombreRegion());
         }
-        
+
         this.generaciones.setModel(modelo);
-        
-        
-        
-        
-        
+
     }
 
     /**
@@ -126,6 +118,11 @@ public class FramePokemonAdd extends javax.swing.JFrame {
         JScrollPanel1.setViewportView(listaPokemon);
 
         botonInsert.setText("Insertar");
+        botonInsert.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonInsertActionPerformed(evt);
+            }
+        });
 
         botonVolver.setText("Volver");
         botonVolver.addActionListener(new java.awt.event.ActionListener() {
@@ -217,16 +214,82 @@ public class FramePokemonAdd extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void generacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generacionesActionPerformed
-        
-        
+
+
     }//GEN-LAST:event_generacionesActionPerformed
 
     private void botonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVolverActionPerformed
-        FramePokemon fm= new FramePokemon();
+        FramePokemon fm = new FramePokemon();
         fm.setVisible(true);
         System.out.println(fm);
         this.dispose();
     }//GEN-LAST:event_botonVolverActionPerformed
+
+    private void botonInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonInsertActionPerformed
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("pokemon");
+        PokemonJpaController pc = new PokemonJpaController(emf);
+        GeneracionJpaController gc = new GeneracionJpaController(emf);
+
+        String nombre = nombrePokemonTexto.getText();
+        String numPkdx = numeroPokedexTexto.getText();
+        String tipo1 = tipo1Texto.getText();
+        String tipo2 = tipo2Texto.getText();
+
+        int index = generaciones.getSelectedIndex();
+        int g = gc.findGeneracionEntities().get(index).getIdGeneracion();
+
+        Pokemon p = new Pokemon();
+
+        Generacion aux = gc.findGeneracion(g);
+
+        p.setGeneracion(aux);
+        p.setNombre(nombre);
+        try {
+            p.setNumeroPokedex(Integer.parseInt(numPkdx));
+        } catch (NumberFormatException nfe) {
+        }
+
+        p.setTipo1(tipo1);
+        p.setTipo2(tipo2);
+
+        if (nombre.equals("") && numPkdx.equals("") && tipo1.equals("") && tipo2.equals("") && generaciones.getSelectedIndex() == -1) {
+
+        } else {
+
+            int id;
+            if (pc.findPokemonEntities().isEmpty()) {
+
+                id = 1;
+            } else {
+
+                id = pc.findPokemonEntities().get(pc.findPokemonEntities().size() - 1).getIdPokemon() + 1;
+
+            }
+
+            p.setIdPokemon(id);
+            try {
+                pc.create(p);
+            } catch (Exception e) {
+            }
+        }
+
+        List<Pokemon> pokemons = pc.findPokemonEntities();
+
+        DefaultTableModel m = new DefaultTableModel();
+
+        m.setColumnIdentifiers(new String[]{" Pokemon ID ", " Generacion ", " Numero Pokedex ", " Nombre ", " Tipo 1 ", " Tipo 2 "});
+        for (Pokemon pok : pokemons) {
+
+            Object[] objetos = {pok.getIdPokemon(), pok.getGeneracion(), pok.getNumeroPokedex(), pok.getNombre(), pok.getTipo1(), pok.getTipo2()};
+            m.addRow(objetos);
+        }
+
+        listaPokemon.setModel(m);
+        listaPokemon.setVisible(true);
+
+
+    }//GEN-LAST:event_botonInsertActionPerformed
 
     /**
      * @param args the command line arguments

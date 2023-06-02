@@ -6,13 +6,14 @@ package controllers;
 
 import controllers.exceptions.IllegalOrphanException;
 import controllers.exceptions.NonexistentEntityException;
+import controllers.exceptions.PreexistingEntityException;
 import java.io.Serializable;
 import javax.persistence.Query;
 import javax.persistence.EntityNotFoundException;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import entities.Generacion;
-import entities.HabilidadPokemon;
+import entities.Habilidadpokemon;
 import entities.Pokemon;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,9 +35,9 @@ public class PokemonJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Pokemon pokemon) {
+    public void create(Pokemon pokemon) throws PreexistingEntityException, Exception {
         if (pokemon.getHabilidadpokemonList() == null) {
-            pokemon.setHabilidadpokemonList(new ArrayList<HabilidadPokemon>());
+            pokemon.setHabilidadpokemonList(new ArrayList<Habilidadpokemon>());
         }
         EntityManager em = null;
         try {
@@ -47,8 +48,8 @@ public class PokemonJpaController implements Serializable {
                 generacion = em.getReference(generacion.getClass(), generacion.getIdGeneracion());
                 pokemon.setGeneracion(generacion);
             }
-            List<HabilidadPokemon> attachedHabilidadpokemonList = new ArrayList<HabilidadPokemon>();
-            for (HabilidadPokemon habilidadpokemonListHabilidadpokemonToAttach : pokemon.getHabilidadpokemonList()) {
+            List<Habilidadpokemon> attachedHabilidadpokemonList = new ArrayList<Habilidadpokemon>();
+            for (Habilidadpokemon habilidadpokemonListHabilidadpokemonToAttach : pokemon.getHabilidadpokemonList()) {
                 habilidadpokemonListHabilidadpokemonToAttach = em.getReference(habilidadpokemonListHabilidadpokemonToAttach.getClass(), habilidadpokemonListHabilidadpokemonToAttach.getHabilidadpokemonPK());
                 attachedHabilidadpokemonList.add(habilidadpokemonListHabilidadpokemonToAttach);
             }
@@ -58,7 +59,7 @@ public class PokemonJpaController implements Serializable {
                 generacion.getPokemonList().add(pokemon);
                 generacion = em.merge(generacion);
             }
-            for (HabilidadPokemon habilidadpokemonListHabilidadpokemon : pokemon.getHabilidadpokemonList()) {
+            for (Habilidadpokemon habilidadpokemonListHabilidadpokemon : pokemon.getHabilidadpokemonList()) {
                 Pokemon oldPokemonOfHabilidadpokemonListHabilidadpokemon = habilidadpokemonListHabilidadpokemon.getPokemon();
                 habilidadpokemonListHabilidadpokemon.setPokemon(pokemon);
                 habilidadpokemonListHabilidadpokemon = em.merge(habilidadpokemonListHabilidadpokemon);
@@ -68,6 +69,11 @@ public class PokemonJpaController implements Serializable {
                 }
             }
             em.getTransaction().commit();
+        } catch (Exception ex) {
+            if (findPokemon(pokemon.getIdPokemon()) != null) {
+                throw new PreexistingEntityException("Pokemon " + pokemon + " already exists.", ex);
+            }
+            throw ex;
         } finally {
             if (em != null) {
                 em.close();
@@ -83,10 +89,10 @@ public class PokemonJpaController implements Serializable {
             Pokemon persistentPokemon = em.find(Pokemon.class, pokemon.getIdPokemon());
             Generacion generacionOld = persistentPokemon.getGeneracion();
             Generacion generacionNew = pokemon.getGeneracion();
-            List<HabilidadPokemon> habilidadpokemonListOld = persistentPokemon.getHabilidadpokemonList();
-            List<HabilidadPokemon> habilidadpokemonListNew = pokemon.getHabilidadpokemonList();
+            List<Habilidadpokemon> habilidadpokemonListOld = persistentPokemon.getHabilidadpokemonList();
+            List<Habilidadpokemon> habilidadpokemonListNew = pokemon.getHabilidadpokemonList();
             List<String> illegalOrphanMessages = null;
-            for (HabilidadPokemon habilidadpokemonListOldHabilidadpokemon : habilidadpokemonListOld) {
+            for (Habilidadpokemon habilidadpokemonListOldHabilidadpokemon : habilidadpokemonListOld) {
                 if (!habilidadpokemonListNew.contains(habilidadpokemonListOldHabilidadpokemon)) {
                     if (illegalOrphanMessages == null) {
                         illegalOrphanMessages = new ArrayList<String>();
@@ -101,8 +107,8 @@ public class PokemonJpaController implements Serializable {
                 generacionNew = em.getReference(generacionNew.getClass(), generacionNew.getIdGeneracion());
                 pokemon.setGeneracion(generacionNew);
             }
-            List<HabilidadPokemon> attachedHabilidadpokemonListNew = new ArrayList<HabilidadPokemon>();
-            for (HabilidadPokemon habilidadpokemonListNewHabilidadpokemonToAttach : habilidadpokemonListNew) {
+            List<Habilidadpokemon> attachedHabilidadpokemonListNew = new ArrayList<Habilidadpokemon>();
+            for (Habilidadpokemon habilidadpokemonListNewHabilidadpokemonToAttach : habilidadpokemonListNew) {
                 habilidadpokemonListNewHabilidadpokemonToAttach = em.getReference(habilidadpokemonListNewHabilidadpokemonToAttach.getClass(), habilidadpokemonListNewHabilidadpokemonToAttach.getHabilidadpokemonPK());
                 attachedHabilidadpokemonListNew.add(habilidadpokemonListNewHabilidadpokemonToAttach);
             }
@@ -117,7 +123,7 @@ public class PokemonJpaController implements Serializable {
                 generacionNew.getPokemonList().add(pokemon);
                 generacionNew = em.merge(generacionNew);
             }
-            for (HabilidadPokemon habilidadpokemonListNewHabilidadpokemon : habilidadpokemonListNew) {
+            for (Habilidadpokemon habilidadpokemonListNewHabilidadpokemon : habilidadpokemonListNew) {
                 if (!habilidadpokemonListOld.contains(habilidadpokemonListNewHabilidadpokemon)) {
                     Pokemon oldPokemonOfHabilidadpokemonListNewHabilidadpokemon = habilidadpokemonListNewHabilidadpokemon.getPokemon();
                     habilidadpokemonListNewHabilidadpokemon.setPokemon(pokemon);
@@ -158,8 +164,8 @@ public class PokemonJpaController implements Serializable {
                 throw new NonexistentEntityException("The pokemon with id " + id + " no longer exists.", enfe);
             }
             List<String> illegalOrphanMessages = null;
-            List<HabilidadPokemon> habilidadpokemonListOrphanCheck = pokemon.getHabilidadpokemonList();
-            for (HabilidadPokemon habilidadpokemonListOrphanCheckHabilidadpokemon : habilidadpokemonListOrphanCheck) {
+            List<Habilidadpokemon> habilidadpokemonListOrphanCheck = pokemon.getHabilidadpokemonList();
+            for (Habilidadpokemon habilidadpokemonListOrphanCheckHabilidadpokemon : habilidadpokemonListOrphanCheck) {
                 if (illegalOrphanMessages == null) {
                     illegalOrphanMessages = new ArrayList<String>();
                 }

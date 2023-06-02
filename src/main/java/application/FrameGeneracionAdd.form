@@ -23,12 +23,12 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanel1" alignment="1" max="32767" attributes="0"/>
+          <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanel1" alignment="1" max="32767" attributes="0"/>
+          <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
   </Layout>
@@ -41,26 +41,32 @@
               <Group type="102" alignment="0" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="numeroPokedex" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="nombrePokemon" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="tipo1" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="tipo2" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="generacion" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" attributes="0">
+                                  <EmptySpace min="-2" pref="69" max="-2" attributes="0"/>
+                                  <Component id="nombreGen" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="88" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="numeroRegion" min="-2" max="-2" attributes="0"/>
+                                      <Component id="numeroPokemons" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                              </Group>
                           </Group>
-                          <EmptySpace type="separate" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="nombrePokemonTexto" max="32767" attributes="0"/>
-                              <Component id="numeroPokedexTexto" max="32767" attributes="0"/>
-                              <Component id="tipo1Texto" max="32767" attributes="0"/>
-                              <Component id="tipo2Texto" max="32767" attributes="0"/>
-                              <Component id="generaciones" pref="240" max="32767" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                  <Component id="nombreGenTexto" pref="240" max="32767" attributes="0"/>
+                                  <Component id="numeroRegionTexto" max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="numeroPokemonsTexto" min="-2" pref="240" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace max="32767" attributes="0"/>
+                          <EmptySpace pref="36" max="32767" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace pref="221" max="32767" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                           <Component id="botonInsert" min="-2" pref="156" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="100" max="-2" attributes="0"/>
                       </Group>
@@ -82,30 +88,20 @@
                       <Group type="102" attributes="0">
                           <EmptySpace min="-2" pref="66" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="nombrePokemon" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="nombrePokemonTexto" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="nombreGen" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="nombreGenTexto" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="numeroPokedex" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="numeroPokedexTexto" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="numeroRegion" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="numeroRegionTexto" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="tipo1" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="tipo1Texto" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="numeroPokemons" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="numeroPokemonsTexto" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="30" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="tipo2" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="tipo2Texto" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="generacion" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="generaciones" alignment="3" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="134" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="255" max="-2" attributes="0"/>
                           <Component id="botonInsert" min="-2" pref="59" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -121,51 +117,29 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="nombrePokemon">
+        <Component class="javax.swing.JLabel" name="nombreGen">
           <Properties>
             <Property name="text" type="java.lang.String" value="Nombre"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="nombrePokemonTexto">
+        <Component class="javax.swing.JTextField" name="nombreGenTexto">
         </Component>
-        <Component class="javax.swing.JLabel" name="numeroPokedex">
+        <Component class="javax.swing.JLabel" name="numeroPokemons">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Numero Pokedex"/>
+            <Property name="text" type="java.lang.String" value="Numero de pokemon"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JTextField" name="numeroPokedexTexto">
-        </Component>
-        <Component class="javax.swing.JLabel" name="tipo1">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Tipo 1"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="tipo1Texto">
-        </Component>
-        <Component class="javax.swing.JLabel" name="tipo2">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Tipo 2"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="tipo2Texto">
-        </Component>
-        <Component class="javax.swing.JLabel" name="generacion">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Generacion"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JComboBox" name="generaciones">
-          <Properties>
-            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="0"/>
-            </Property>
-          </Properties>
+        <Component class="javax.swing.JTextField" name="numeroPokemonsTexto">
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="generacionesActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="numeroPokemonsTextoActionPerformed"/>
           </Events>
-          <AuxValues>
-            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-          </AuxValues>
+        </Component>
+        <Component class="javax.swing.JLabel" name="numeroRegion">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Numero Region"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="numeroRegionTexto">
         </Component>
         <Container class="javax.swing.JScrollPane" name="JScrollPanel1">
           <AuxValues>
@@ -174,7 +148,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTable" name="listaPokemon">
+            <Component class="javax.swing.JTable" name="listaGen">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="4" rowCount="4">

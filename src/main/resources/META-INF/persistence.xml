@@ -6,6 +6,7 @@
     <class>entities.HabilidadPokemon</class>
     <class>entities.Generacion</class>
     <class>entities.Habilidad</class>
+    <class>entities.Habilidadpokemon</class>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/proyectoFinal?zeroDateTimeBehavior=CONVERT_TO_NULL"/>
       <property name="javax.persistence.jdbc.user" value="root"/>

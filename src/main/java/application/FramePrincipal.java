@@ -33,6 +33,8 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+
         BotonPokemon.setText("Pokemon");
         BotonPokemon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -41,8 +43,18 @@ public class FramePrincipal extends javax.swing.JFrame {
         });
 
         BotonHabilidades.setText("Habilidades");
+        BotonHabilidades.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonHabilidadesActionPerformed(evt);
+            }
+        });
 
         BotonGeneracion.setText("Generaciones");
+        BotonGeneracion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BotonGeneracionActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -83,12 +95,28 @@ public class FramePrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void BotonPokemonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonPokemonActionPerformed
-        
+
         FramePokemon fp = new FramePokemon();
         fp.setVisible(true);
         System.out.println(fp);
         this.dispose();
     }//GEN-LAST:event_BotonPokemonActionPerformed
+
+    private void BotonGeneracionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonGeneracionActionPerformed
+
+        FrameGeneracion fg = new FrameGeneracion();
+        fg.setVisible(true);
+        System.out.println(fg);
+        this.dispose();
+    }//GEN-LAST:event_BotonGeneracionActionPerformed
+
+    private void BotonHabilidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BotonHabilidadesActionPerformed
+        FrameHabilidad fh = new FrameHabilidad();
+        fh.setVisible(true);
+        System.out.println(fh);
+        this.dispose();
+        
+    }//GEN-LAST:event_BotonHabilidadesActionPerformed
 
     /**
      * @param args the command line arguments

@@ -7,7 +7,7 @@ package programa;
 import application.FramePrincipal;
 import controllers.GeneracionJpaController;
 import controllers.HabilidadJpaController;
-import controllers.HabilidadPokemonJpaController;
+import controllers.HabilidadpokemonJpaController;
 import controllers.PokemonJpaController;
 import entities.Generacion;
 import entities.Habilidad;
