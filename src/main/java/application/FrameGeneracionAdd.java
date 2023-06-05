@@ -26,36 +26,26 @@ public class FrameGeneracionAdd extends javax.swing.JFrame {
      */
     public FrameGeneracionAdd() {
         initComponents();
-        
+
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("pokemon");
-        
-        
+
         listaGen.setEnabled(false);
-        
 
         GeneracionJpaController gc = new GeneracionJpaController(emf);
         List<Generacion> gens = gc.findGeneracionEntities();
 
         DefaultTableModel m = new DefaultTableModel();
 
-        m.setColumnIdentifiers(new String[]{" Generacion ID "," Numero Generacion "," Numero de Pokemon ", " Nombre Generacion "});
+        m.setColumnIdentifiers(new String[]{" Generacion ID ", " Numero Generacion ", " Numero de Pokemon ", " Nombre Generacion "});
         for (Generacion g : gens) {
-            
-            Object[] objetos = {g.getIdGeneracion(),g.getNumeroGeneracion(),g.getNumeroPokemon(),g.getNombreRegion()};
+
+            Object[] objetos = {g.getIdGeneracion(), g.getNumeroGeneracion(), g.getNumeroPokemon(), g.getNombreRegion()};
             m.addRow(objetos);
         }
 
         listaGen.setModel(m);
         listaGen.setVisible(true);
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
     }
 
     /**
@@ -197,76 +187,58 @@ public class FrameGeneracionAdd extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVolverActionPerformed
-        FrameGeneracion fm= new FrameGeneracion();
+        FrameGeneracion fm = new FrameGeneracion();
         fm.setVisible(true);
         System.out.println(fm);
         this.dispose();
     }//GEN-LAST:event_botonVolverActionPerformed
 
     private void botonInsertActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonInsertActionPerformed
-        
+
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("pokemon");
-        
-        GeneracionJpaController gc= new GeneracionJpaController(emf);
-        
-        
-        
-        String nombre= nombreGenTexto.getText();
-        String numPokemons=numeroPokemonsTexto.getText();
-        String numeroRegion= numeroRegionTexto.getText();
-        
-        
-        
-        
-        Generacion aux= new Generacion();
-        
+
+        GeneracionJpaController gc = new GeneracionJpaController(emf);
+
+        String nombre = nombreGenTexto.getText();
+        String numPokemons = numeroPokemonsTexto.getText();
+        String numeroRegion = numeroRegionTexto.getText();
+
+        Generacion aux = new Generacion();
+
         aux.setNombreRegion(nombre);
         try {
-          aux.setNumeroGeneracion(Integer.parseInt(numeroRegion));
-          aux.setNumeroPokemon(Integer.parseInt(numPokemons));  
+            aux.setNumeroGeneracion(Integer.parseInt(numeroRegion));
+            aux.setNumeroPokemon(Integer.parseInt(numPokemons));
         } catch (Exception e) {
         }
-        
-        if(nombre.equals("")&&numPokemons.equals("")&&numeroRegion.equals("")){
-        
-        }else{
-        
-        int id;
-        if(gc.findGeneracionEntities().isEmpty()){
-        
-        id=1;
-        }else{
-        
-        id=gc.findGeneracionEntities().get(gc.findGeneracionEntities().size()-1).getIdGeneracion()+1;
-        
+
+        if (!nombre.equals("") && !numPokemons.equals("") && !numeroRegion.equals("")) {
+            try {
+                gc.create(aux);
+            } catch (Exception e) {
+            }
+
+            nombreGenTexto.setText("");
+            numeroPokemonsTexto.setText("");
+            numeroRegionTexto.setText("");
+
         }
-        
-        aux.setIdGeneracion(id);
-        
-        
-        
-        try {
-         gc.create(aux);   
-        } catch (Exception e) {
-        }
-        }
-        
+
         List<Generacion> gens = gc.findGeneracionEntities();
 
         DefaultTableModel m = new DefaultTableModel();
 
-        m.setColumnIdentifiers(new String[]{" Generacion ID "," Numero Generacion "," Numero de Pokemon ", " Nombre Generacion "});
+        m.setColumnIdentifiers(new String[]{" Generacion ID ", " Numero Generacion ", " Numero de Pokemon ", " Nombre Generacion "});
         for (Generacion g : gens) {
-            
-            Object[] objetos = {g.getIdGeneracion(),g.getNumeroGeneracion(),g.getNumeroPokemon(),g.getNombreRegion()};
+
+            Object[] objetos = {g.getIdGeneracion(), g.getNumeroGeneracion(), g.getNumeroPokemon(), g.getNombreRegion()};
             m.addRow(objetos);
         }
 
         listaGen.setModel(m);
         listaGen.setVisible(true);
-        
-        
-        
+
+
     }//GEN-LAST:event_botonInsertActionPerformed
 
     private void numeroPokemonsTextoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numeroPokemonsTextoActionPerformed

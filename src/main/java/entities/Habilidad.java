@@ -7,9 +7,10 @@ package entities;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -31,6 +32,7 @@ public class Habilidad implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idHabilidad")
     private Integer idHabilidad;
@@ -38,8 +40,8 @@ public class Habilidad implements Serializable {
     private String nombreHabilidad;
     @Column(name = "descripcion")
     private String descripcion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "habilidad")
-    private List<Habilidadpokemon> habilidadpokemonList;
+    @OneToMany(mappedBy = "habilidad")
+    private List<Pokemon> pokemonList;
 
     public Habilidad() {
     }
@@ -72,12 +74,12 @@ public class Habilidad implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public List<Habilidadpokemon> getHabilidadpokemonList() {
-        return habilidadpokemonList;
+    public List<Pokemon> getPokemonList() {
+        return pokemonList;
     }
 
-    public void setHabilidadpokemonList(List<Habilidadpokemon> habilidadpokemonList) {
-        this.habilidadpokemonList = habilidadpokemonList;
+    public void setPokemonList(List<Pokemon> pokemonList) {
+        this.pokemonList = pokemonList;
     }
 
     @Override
@@ -102,7 +104,9 @@ public class Habilidad implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.Habilidad[ idHabilidad=" + idHabilidad + " ]";
+        return idHabilidad + ";" + nombreHabilidad + ";" + descripcion;
     }
+
+    
     
 }

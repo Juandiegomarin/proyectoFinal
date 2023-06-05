@@ -4,6 +4,13 @@
  */
 package application;
 
+import controllers.HabilidadJpaController;
+import entities.Habilidad;
+import java.util.List;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Juan Diego
@@ -15,6 +22,24 @@ public class FrameHabilidadAdd extends javax.swing.JFrame {
      */
     public FrameHabilidadAdd() {
         initComponents();
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("pokemon");
+
+        HabilidadJpaController hc = new HabilidadJpaController(emf);
+
+        List<Habilidad> habs = hc.findHabilidadEntities();
+
+        DefaultTableModel m = new DefaultTableModel();
+
+        m.setColumnIdentifiers(new String[]{" Habilidad ID ", " Nombre Habilidad ", " Descripcion "});
+        for (Habilidad h : habs) {
+
+            Object[] objetos = {h.getIdHabilidad(), h.getNombreHabilidad(), h.getDescripcion()};
+            m.addRow(objetos);
+        }
+
+        listaHabs.setModel(m);
+        listaHabs.setVisible(true);
     }
 
     /**
@@ -26,21 +51,160 @@ public class FrameHabilidadAdd extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        nombreHab = new javax.swing.JLabel();
+        nombreHabTexto = new javax.swing.JTextField();
+        descHab = new javax.swing.JLabel();
+        descHabTexto = new javax.swing.JTextField();
+        JScrollPanel2 = new javax.swing.JScrollPane();
+        listaHabs = new javax.swing.JTable();
+        botonInsertHab = new javax.swing.JButton();
+        botonAtras = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        nombreHab.setText("Nombre");
+
+        descHab.setText("Descripcion");
+
+        listaHabs.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        JScrollPanel2.setViewportView(listaHabs);
+
+        botonInsertHab.setText("Insertar");
+        botonInsertHab.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonInsertHabActionPerformed(evt);
+            }
+        });
+
+        botonAtras.setText("Volver");
+        botonAtras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonAtrasActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(69, 69, 69)
+                                .addComponent(nombreHab)
+                                .addGap(88, 88, 88))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(descHab)
+                                .addGap(70, 70, 70)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(nombreHabTexto, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
+                            .addComponent(descHabTexto))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(botonInsertHab, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(100, 100, 100)))
+                .addComponent(JScrollPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 786, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(botonAtras)
+                .addGap(375, 375, 375))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(66, 66, 66)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(nombreHab)
+                            .addComponent(nombreHabTexto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(29, 29, 29)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(descHab)
+                            .addComponent(descHabTexto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(306, 306, 306)
+                        .addComponent(botonInsertHab, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(50, 50, 50)
+                        .addComponent(JScrollPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 536, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 146, Short.MAX_VALUE)
+                .addComponent(botonAtras)
+                .addGap(103, 103, 103))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void botonInsertHabActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonInsertHabActionPerformed
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("pokemon");
+
+        HabilidadJpaController hc = new HabilidadJpaController(emf);
+
+        String nombre = nombreHabTexto.getText();
+        String desc = descHabTexto.getText();
+
+        Habilidad aux = new Habilidad();
+
+        aux.setNombreHabilidad(nombre);
+        aux.setDescripcion(desc);
+
+        if (!nombre.equals("") && !desc.equals("")) {
+            try {
+                hc.create(aux);
+            } catch (Exception e) {
+            }
+            nombreHabTexto.setText("");
+            descHabTexto.setText("");
+            List<Habilidad> habs = hc.findHabilidadEntities();
+
+            DefaultTableModel m = new DefaultTableModel();
+
+            m.setColumnIdentifiers(new String[]{" Habilidad ID ", " Nombre Habilidad ", " Descripcion "});
+            for (Habilidad h : habs) {
+
+                Object[] objetos = {h.getIdHabilidad(), h.getNombreHabilidad(), h.getDescripcion()};
+                m.addRow(objetos);
+            }
+
+            listaHabs.setModel(m);
+            listaHabs.setVisible(true);
+        }
+    }//GEN-LAST:event_botonInsertHabActionPerformed
+
+    private void botonAtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAtrasActionPerformed
+        FrameHabilidad fh = new FrameHabilidad();
+        fh.setVisible(true);
+        System.out.println(fh);
+        this.dispose();
+    }//GEN-LAST:event_botonAtrasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +242,25 @@ public class FrameHabilidadAdd extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane JScrollPanel1;
+    private javax.swing.JScrollPane JScrollPanel2;
+    private javax.swing.JButton botonAtras;
+    private javax.swing.JButton botonInsert;
+    private javax.swing.JButton botonInsertHab;
+    private javax.swing.JButton botonVolver;
+    private javax.swing.JLabel descHab;
+    private javax.swing.JTextField descHabTexto;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JTable listaGen;
+    private javax.swing.JTable listaHabs;
+    private javax.swing.JLabel nombreGen;
+    private javax.swing.JTextField nombreGenTexto;
+    private javax.swing.JLabel nombreHab;
+    private javax.swing.JTextField nombreHabTexto;
+    private javax.swing.JLabel numeroPokemons;
+    private javax.swing.JTextField numeroPokemonsTexto;
+    private javax.swing.JLabel numeroRegion;
+    private javax.swing.JTextField numeroRegionTexto;
     // End of variables declaration//GEN-END:variables
 }

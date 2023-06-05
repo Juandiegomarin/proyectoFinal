@@ -62,6 +62,7 @@
                                       </Group>
                                   </Group>
                               </Group>
+                              <Component id="habilidadPokemon" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -77,6 +78,7 @@
                               <Component id="nombreTexto" alignment="0" pref="247" max="32767" attributes="0"/>
                               <Component id="tipo2Texto" max="32767" attributes="0"/>
                               <Component id="generacionText" max="32767" attributes="0"/>
+                              <Component id="habilidadPokemonTexto" max="32767" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -121,10 +123,15 @@
                       <Component id="tipo2" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="tipo2Texto" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace min="-2" pref="48" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="generacion" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="generacionText" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="habilidadPokemon" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="habilidadPokemonTexto" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -249,6 +256,21 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Inserta al menos un dato para modificar el pokemon"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="habilidadPokemon">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Habilidad"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="habilidadPokemonTexto">
+          <Properties>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="0"/>
+            </Property>
+          </Properties>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>

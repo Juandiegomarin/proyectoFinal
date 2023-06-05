@@ -4,6 +4,14 @@
  */
 package application;
 
+import controllers.HabilidadJpaController;
+import controllers.exceptions.NonexistentEntityException;
+import entities.Habilidad;
+import java.util.List;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Juan Diego
@@ -15,6 +23,24 @@ public class FrameHabilidadDelete extends javax.swing.JFrame {
      */
     public FrameHabilidadDelete() {
         initComponents();
+         this.listaHabs.setEnabled(false);
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("pokemon");
+
+        HabilidadJpaController hc = new HabilidadJpaController(emf);
+
+        List<Habilidad> habs = hc.findHabilidadEntities();
+
+        DefaultTableModel m = new DefaultTableModel();
+
+        m.setColumnIdentifiers(new String[]{" Habilidad ID ", " Nombre Habilidad ", " Descripcion "});
+        for (Habilidad h : habs) {
+
+            Object[] objetos = {h.getIdHabilidad(), h.getNombreHabilidad(), h.getDescripcion()};
+            m.addRow(objetos);
+        }
+
+        listaHabs.setModel(m);
+        listaHabs.setVisible(true);
     }
 
     /**
@@ -26,21 +52,133 @@ public class FrameHabilidadDelete extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel2 = new javax.swing.JPanel();
+        TextoBorrar = new javax.swing.JLabel();
+        jcodigo = new javax.swing.JTextField();
+        JScrollPanel = new javax.swing.JScrollPane();
+        listaHabs = new javax.swing.JTable();
+        Borrar = new javax.swing.JButton();
+        Atras = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        TextoBorrar.setText("Inserte el id de la generacion que quiere borrar");
+
+        listaHabs.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        JScrollPanel.setViewportView(listaHabs);
+
+        Borrar.setText("Borrar");
+        Borrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BorrarActionPerformed(evt);
+            }
+        });
+
+        Atras.setText("Volver");
+        Atras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AtrasActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(115, 115, 115)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(Borrar, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(TextoBorrar))
+                        .addGap(36, 36, 36)
+                        .addComponent(jcodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(207, 207, 207)
+                        .addComponent(Atras)))
+                .addGap(57, 57, 57)
+                .addComponent(JScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 771, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(JScrollPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(134, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(TextoBorrar)
+                    .addComponent(jcodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(Borrar, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(141, 141, 141)
+                .addComponent(Atras)
+                .addGap(50, 50, 50))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 6, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void BorrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BorrarActionPerformed
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("pokemon");
+
+        HabilidadJpaController hc = new HabilidadJpaController(emf);
+
+        int id = Integer.parseInt(this.jcodigo.getText());
+
+        try {
+            hc.destroy(id);
+        } catch (NonexistentEntityException ex) {
+
+        }
+        List<Habilidad> habs = hc.findHabilidadEntities();
+
+        DefaultTableModel m = new DefaultTableModel();
+
+        m.setColumnIdentifiers(new String[]{" Habilidad ID ", " Nombre Habilidad ", " Descripcion "});
+        for (Habilidad h : habs) {
+
+            Object[] objetos = {h.getIdHabilidad(), h.getNombreHabilidad(), h.getDescripcion()};
+            m.addRow(objetos);
+        }
+
+        listaHabs.setModel(m);
+        listaHabs.setVisible(true);
+    }//GEN-LAST:event_BorrarActionPerformed
+
+    private void AtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AtrasActionPerformed
+
+        FrameHabilidad fh = new FrameHabilidad();
+        fh.setVisible(true);
+        System.out.println(fh);
+        this.dispose();
+    }//GEN-LAST:event_AtrasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +216,12 @@ public class FrameHabilidadDelete extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Atras;
+    private javax.swing.JButton Borrar;
+    private javax.swing.JScrollPane JScrollPanel;
+    private javax.swing.JLabel TextoBorrar;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JTextField jcodigo;
+    private javax.swing.JTable listaHabs;
     // End of variables declaration//GEN-END:variables
 }

@@ -30,6 +30,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         BotonPokemon = new javax.swing.JButton();
         BotonHabilidades = new javax.swing.JButton();
         BotonGeneracion = new javax.swing.JButton();
+        botonCopias = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,28 +57,38 @@ public class FramePrincipal extends javax.swing.JFrame {
             }
         });
 
+        botonCopias.setText("Copias de Segurida");
+        botonCopias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonCopiasActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(448, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(412, 412, 412)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(BotonPokemon, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(BotonHabilidades, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(BotonGeneracion, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE))
-                .addGap(429, 429, 429))
+                    .addComponent(BotonHabilidades, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
+                    .addComponent(BotonGeneracion, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
+                    .addComponent(BotonPokemon, javax.swing.GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
+                    .addComponent(botonCopias, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(465, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(98, 98, 98)
+                .addGap(64, 64, 64)
                 .addComponent(BotonPokemon, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(101, 101, 101)
+                .addGap(96, 96, 96)
                 .addComponent(BotonGeneracion, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 103, Short.MAX_VALUE)
+                .addGap(90, 90, 90)
                 .addComponent(BotonHabilidades, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(299, 299, 299))
+                .addGap(78, 78, 78)
+                .addComponent(botonCopias, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(169, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -115,8 +126,15 @@ public class FramePrincipal extends javax.swing.JFrame {
         fh.setVisible(true);
         System.out.println(fh);
         this.dispose();
-        
+
     }//GEN-LAST:event_BotonHabilidadesActionPerformed
+
+    private void botonCopiasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonCopiasActionPerformed
+        FrameCopias fc = new FrameCopias();
+        fc.setVisible(true);
+        System.out.println(fc);
+        this.dispose();
+    }//GEN-LAST:event_botonCopiasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -157,6 +175,7 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JButton BotonGeneracion;
     private javax.swing.JButton BotonHabilidades;
     private javax.swing.JButton BotonPokemon;
+    private javax.swing.JButton botonCopias;
     private javax.swing.JPanel jPanel1;
     // End of variables declaration//GEN-END:variables
 }

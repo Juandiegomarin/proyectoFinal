@@ -332,7 +332,7 @@ public class FrameGeneracionUpdate extends javax.swing.JFrame {
             } else {
 
                 aux.setNombreRegion(nombreGenTexto.getText());
-
+                nombreGenTexto.setText("");
             }
 
             if (numeroPokemonsTexto.getText().equals("")) {
@@ -345,7 +345,7 @@ public class FrameGeneracionUpdate extends javax.swing.JFrame {
                     aux.setNumeroPokemon(Integer.parseInt(numeroPokemonsTexto.getText()));
                 } catch (NumberFormatException e) {
                 }
-
+                numeroPokemonsTexto.setText("");
             }
 
             if (numeroRegionTexto.getText().equals("")) {
@@ -358,6 +358,7 @@ public class FrameGeneracionUpdate extends javax.swing.JFrame {
                     aux.setNumeroGeneracion(Integer.parseInt(numeroRegionTexto.getText()));
                 } catch (NumberFormatException e) {
                 }
+                numeroRegionTexto.setText("");
 
             }
 

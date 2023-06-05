@@ -5,7 +5,6 @@
 package controllers;
 
 import controllers.exceptions.NonexistentEntityException;
-import controllers.exceptions.PreexistingEntityException;
 import entities.Generacion;
 import java.io.Serializable;
 import javax.persistence.Query;
@@ -33,7 +32,7 @@ public class GeneracionJpaController implements Serializable {
         return emf.createEntityManager();
     }
 
-    public void create(Generacion generacion) throws PreexistingEntityException, Exception {
+    public void create(Generacion generacion) {
         if (generacion.getPokemonList() == null) {
             generacion.setPokemonList(new ArrayList<Pokemon>());
         }
@@ -58,11 +57,6 @@ public class GeneracionJpaController implements Serializable {
                 }
             }
             em.getTransaction().commit();
-        } catch (Exception ex) {
-            if (findGeneracion(generacion.getIdGeneracion()) != null) {
-                throw new PreexistingEntityException("Generacion " + generacion + " already exists.", ex);
-            }
-            throw ex;
         } finally {
             if (em != null) {
                 em.close();

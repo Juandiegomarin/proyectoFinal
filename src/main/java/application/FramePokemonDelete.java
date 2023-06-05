@@ -4,12 +4,10 @@
  */
 package application;
 
-
 import controllers.PokemonJpaController;
 import controllers.exceptions.IllegalOrphanException;
 import controllers.exceptions.NonexistentEntityException;
 import entities.Pokemon;
-
 
 import java.util.List;
 import java.util.logging.Level;
@@ -38,10 +36,10 @@ public class FramePokemonDelete extends javax.swing.JFrame {
 
         DefaultTableModel m = new DefaultTableModel();
 
-        m.setColumnIdentifiers(new String[]{" Pokemon ID "," Generacion "," Numero Pokedex ", " Nombre "," Tipo 1 "," Tipo 2 "});
-        for (Pokemon pok : pokemons) {
-            
-            Object[] objetos = {pok.getIdPokemon(),pok.getGeneracion(),pok.getNumeroPokedex(),pok.getNombre(),pok.getTipo1(),pok.getTipo2()};
+        m.setColumnIdentifiers(new String[]{" Pokemon ID ", " Generacion ", " Numero Pokedex ", " Nombre ", " Tipo 1 ", " Tipo 2 ", " Habilidad "});
+        for (Pokemon p : pokemons) {
+
+            Object[] objetos = {p.getIdPokemon(), p.getGeneracion().getNumeroGeneracion(), p.getNumeroPokedex(), p.getNombre(), p.getTipo1(), p.getTipo2(), p.getHabilidad().getNombreHabilidad()};
             m.addRow(objetos);
         }
 
@@ -176,17 +174,15 @@ public class FramePokemonDelete extends javax.swing.JFrame {
             pc.destroy(id);
         } catch (NonexistentEntityException ex) {
 
-        } catch (IllegalOrphanException ex) {
-            Logger.getLogger(FramePokemonDelete.class.getName()).log(Level.SEVERE, null, ex);
         }
-         List<Pokemon> pokemons = pc.findPokemonEntities();
+        List<Pokemon> pokemons = pc.findPokemonEntities();
 
         DefaultTableModel m = new DefaultTableModel();
 
-        m.setColumnIdentifiers(new String[]{" Pokemon ID "," Generacion "," Numero Pokedex ", " Nombre "," Tipo 1 "," Tipo 2 "});
-        for (Pokemon pok : pokemons) {
-            
-            Object[] objetos = {pok.getIdPokemon(),pok.getGeneracion(),pok.getNumeroPokedex(),pok.getNombre(),pok.getTipo1(),pok.getTipo2()};
+        m.setColumnIdentifiers(new String[]{" Pokemon ID ", " Generacion ", " Numero Pokedex ", " Nombre ", " Tipo 1 ", " Tipo 2 ", " Habilidad "});
+        for (Pokemon p : pokemons) {
+
+            Object[] objetos = {p.getIdPokemon(), p.getGeneracion().getNumeroGeneracion(), p.getNumeroPokedex(), p.getNombre(), p.getTipo1(), p.getTipo2(), p.getHabilidad().getNombreHabilidad()};
             m.addRow(objetos);
         }
 

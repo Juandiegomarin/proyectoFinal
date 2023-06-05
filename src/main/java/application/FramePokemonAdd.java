@@ -5,8 +5,10 @@
 package application;
 
 import controllers.GeneracionJpaController;
+import controllers.HabilidadJpaController;
 import controllers.PokemonJpaController;
 import entities.Generacion;
+import entities.Habilidad;
 import entities.Pokemon;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
@@ -36,10 +38,10 @@ public class FramePokemonAdd extends javax.swing.JFrame {
 
         DefaultTableModel m = new DefaultTableModel();
 
-        m.setColumnIdentifiers(new String[]{" Pokemon ID ", " Generacion ", " Numero Pokedex ", " Nombre ", " Tipo 1 ", " Tipo 2 "});
+        m.setColumnIdentifiers(new String[]{" Pokemon ID ", " Generacion ", " Numero Pokedex ", " Nombre ", " Tipo 1 ", " Tipo 2 ", " Habilidad "});
         for (Pokemon p : pokemons) {
 
-            Object[] objetos = {p.getIdPokemon(), p.getGeneracion(), p.getNumeroPokedex(), p.getNombre(), p.getTipo1(), p.getTipo2()};
+            Object[] objetos = {p.getIdPokemon(), p.getGeneracion().getNumeroGeneracion(), p.getNumeroPokedex(), p.getNombre(), p.getTipo1(), p.getTipo2(), p.getHabilidad().getNombreHabilidad()};
             m.addRow(objetos);
         }
 
@@ -58,6 +60,20 @@ public class FramePokemonAdd extends javax.swing.JFrame {
         }
 
         this.generaciones.setModel(modelo);
+        this.generaciones.setSelectedIndex(-1);
+
+        HabilidadJpaController hc = new HabilidadJpaController(emf);
+
+        List<Habilidad> habs = hc.findHabilidadEntities().stream().sorted((o1, o2) -> o1.getIdHabilidad().compareTo(o2.getIdHabilidad())).toList();
+
+        DefaultComboBoxModel modeloHab = new DefaultComboBoxModel();
+
+        for (Habilidad hab : habs) {
+            modeloHab.addElement(" Habilidad: " + hab.getNombreHabilidad());
+
+        }
+        this.habilidadPokemonText.setModel(modeloHab);
+        this.habilidadPokemonText.setSelectedIndex(-1);
 
     }
 
@@ -85,6 +101,8 @@ public class FramePokemonAdd extends javax.swing.JFrame {
         listaPokemon = new javax.swing.JTable();
         botonInsert = new javax.swing.JButton();
         botonVolver = new javax.swing.JButton();
+        habilidadPokemon = new javax.swing.JLabel();
+        habilidadPokemonText = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -131,6 +149,8 @@ public class FramePokemonAdd extends javax.swing.JFrame {
             }
         });
 
+        habilidadPokemon.setText("Habilidad");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -144,14 +164,16 @@ public class FramePokemonAdd extends javax.swing.JFrame {
                             .addComponent(nombrePokemon)
                             .addComponent(tipo1)
                             .addComponent(tipo2)
-                            .addComponent(generacion))
+                            .addComponent(generacion)
+                            .addComponent(habilidadPokemon))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(nombrePokemonTexto)
                             .addComponent(numeroPokedexTexto)
                             .addComponent(tipo1Texto)
                             .addComponent(tipo2Texto)
-                            .addComponent(generaciones, 0, 240, Short.MAX_VALUE))
+                            .addComponent(generaciones, 0, 240, Short.MAX_VALUE)
+                            .addComponent(habilidadPokemonText, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap(221, Short.MAX_VALUE)
@@ -189,7 +211,11 @@ public class FramePokemonAdd extends javax.swing.JFrame {
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(generacion)
                             .addComponent(generaciones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(134, 134, 134)
+                        .addGap(34, 34, 34)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(habilidadPokemon)
+                            .addComponent(habilidadPokemonText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(78, 78, 78)
                         .addComponent(botonInsert, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(50, 50, 50)
@@ -230,58 +256,65 @@ public class FramePokemonAdd extends javax.swing.JFrame {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("pokemon");
         PokemonJpaController pc = new PokemonJpaController(emf);
         GeneracionJpaController gc = new GeneracionJpaController(emf);
+        HabilidadJpaController hc = new HabilidadJpaController(emf);
 
         String nombre = nombrePokemonTexto.getText();
         String numPkdx = numeroPokedexTexto.getText();
         String tipo1 = tipo1Texto.getText();
         String tipo2 = tipo2Texto.getText();
 
-        int index = generaciones.getSelectedIndex();
-        int g = gc.findGeneracionEntities().get(index).getIdGeneracion();
+        int g = 0;
+        int h = 0;
+        try {
+            int indexGen = generaciones.getSelectedIndex();
+            g = gc.findGeneracionEntities().get(indexGen).getIdGeneracion();
 
-        Pokemon p = new Pokemon();
+            int indexHab = habilidadPokemonText.getSelectedIndex();
+            h = hc.findHabilidadEntities().get(indexHab).getIdHabilidad();
+        } catch (Exception e) {
+        }
+
+        Pokemon pk = new Pokemon();
 
         Generacion aux = gc.findGeneracion(g);
+        Habilidad haux = hc.findHabilidad(h);
 
-        p.setGeneracion(aux);
-        p.setNombre(nombre);
+        pk.setHabilidad(haux);
+        pk.setGeneracion(aux);
+        pk.setNombre(nombre);
         try {
-            p.setNumeroPokedex(Integer.parseInt(numPkdx));
+            pk.setNumeroPokedex(Integer.parseInt(numPkdx));
         } catch (NumberFormatException nfe) {
         }
 
-        p.setTipo1(tipo1);
-        p.setTipo2(tipo2);
+        pk.setTipo1(tipo1);
+        pk.setTipo2(tipo2);
 
-        if (nombre.equals("") && numPkdx.equals("") && tipo1.equals("") && tipo2.equals("") && generaciones.getSelectedIndex() == -1) {
+        if (!nombre.equals("") && !numPkdx.equals("") && !tipo1.equals("") && generaciones.getSelectedIndex() >= 0 && habilidadPokemonText.getSelectedIndex() >= 0) {
 
-        } else {
-
-            int id;
-            if (pc.findPokemonEntities().isEmpty()) {
-
-                id = 1;
-            } else {
-
-                id = pc.findPokemonEntities().get(pc.findPokemonEntities().size() - 1).getIdPokemon() + 1;
-
+            if (tipo2.equals("")) {
+                pk.setTipo2("none");
             }
-
-            p.setIdPokemon(id);
             try {
-                pc.create(p);
+                pc.create(pk);
             } catch (Exception e) {
             }
+            this.generaciones.setSelectedIndex(-1);
+            this.habilidadPokemonText.setSelectedIndex(-1);
+            this.nombrePokemonTexto.setText("");
+            this.numeroPokedexTexto.setText("");
+            this.tipo1Texto.setText("");
+            this.tipo2Texto.setText("");
         }
 
         List<Pokemon> pokemons = pc.findPokemonEntities();
 
         DefaultTableModel m = new DefaultTableModel();
 
-        m.setColumnIdentifiers(new String[]{" Pokemon ID ", " Generacion ", " Numero Pokedex ", " Nombre ", " Tipo 1 ", " Tipo 2 "});
-        for (Pokemon pok : pokemons) {
+        m.setColumnIdentifiers(new String[]{" Pokemon ID ", " Generacion ", " Numero Pokedex ", " Nombre ", " Tipo 1 ", " Tipo 2 ", " Habilidad "});
+        for (Pokemon p : pokemons) {
 
-            Object[] objetos = {pok.getIdPokemon(), pok.getGeneracion(), pok.getNumeroPokedex(), pok.getNombre(), pok.getTipo1(), pok.getTipo2()};
+            Object[] objetos = {p.getIdPokemon(), p.getGeneracion().getNumeroGeneracion(), p.getNumeroPokedex(), p.getNombre(), p.getTipo1(), p.getTipo2(), p.getHabilidad().getNombreHabilidad()};
             m.addRow(objetos);
         }
 
@@ -332,6 +365,8 @@ public class FramePokemonAdd extends javax.swing.JFrame {
     private javax.swing.JButton botonVolver;
     private javax.swing.JLabel generacion;
     private javax.swing.JComboBox<String> generaciones;
+    private javax.swing.JLabel habilidadPokemon;
+    private javax.swing.JComboBox<String> habilidadPokemonText;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTable listaPokemon;
     private javax.swing.JLabel nombrePokemon;

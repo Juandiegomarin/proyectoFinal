@@ -5,17 +5,16 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 /**
@@ -35,6 +34,7 @@ public class Pokemon implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "idPokemon")
     private Integer idPokemon;
@@ -49,8 +49,9 @@ public class Pokemon implements Serializable {
     @JoinColumn(name = "generacion", referencedColumnName = "idGeneracion")
     @ManyToOne
     private Generacion generacion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pokemon")
-    private List<Habilidadpokemon> habilidadpokemonList;
+    @JoinColumn(name = "habilidad", referencedColumnName = "idHabilidad")
+    @ManyToOne
+    private Habilidad habilidad;
 
     public Pokemon() {
     }
@@ -107,12 +108,12 @@ public class Pokemon implements Serializable {
         this.generacion = generacion;
     }
 
-    public List<Habilidadpokemon> getHabilidadpokemonList() {
-        return habilidadpokemonList;
+    public Habilidad getHabilidad() {
+        return habilidad;
     }
 
-    public void setHabilidadpokemonList(List<Habilidadpokemon> habilidadpokemonList) {
-        this.habilidadpokemonList = habilidadpokemonList;
+    public void setHabilidad(Habilidad habilidad) {
+        this.habilidad = habilidad;
     }
 
     @Override
@@ -137,7 +138,9 @@ public class Pokemon implements Serializable {
 
     @Override
     public String toString() {
-        return "entities.Pokemon[ idPokemon=" + idPokemon + " ]";
+        return  idPokemon + ";" + numeroPokedex + ";" + nombre + ";" + tipo1 + ";" + tipo2 + ";" + generacion.getNombreRegion() + ";" + habilidad.getNombreHabilidad();
     }
+
+    
     
 }

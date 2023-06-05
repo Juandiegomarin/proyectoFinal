@@ -31,15 +31,16 @@ public class FramePokemon extends javax.swing.JFrame {
 
         DefaultTableModel m = new DefaultTableModel();
 
-        m.setColumnIdentifiers(new String[]{" Pokemon ID "," Generacion "," Numero Pokedex ", " Nombre "," Tipo 1 "," Tipo 2 "});
+        m.setColumnIdentifiers(new String[]{" Pokemon ID ", " Generacion ", " Numero Pokedex ", " Nombre ", " Tipo 1 ", " Tipo 2 ", " Habilidad "});
         for (Pokemon p : pokemons) {
-            
-            Object[] objetos = {p.getIdPokemon(),p.getGeneracion(),p.getNumeroPokedex(),p.getNombre(),p.getTipo1(),p.getTipo2()};
+
+            Object[] objetos = {p.getIdPokemon(), p.getGeneracion().getNumeroGeneracion(), p.getNumeroPokedex(), p.getNombre(), p.getTipo1(), p.getTipo2(),p.getHabilidad().getNombreHabilidad()};
             m.addRow(objetos);
         }
 
         listaPokemon.setModel(m);
         listaPokemon.setVisible(true);
+
     }
 
     /**

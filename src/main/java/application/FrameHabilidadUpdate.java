@@ -4,6 +4,16 @@
  */
 package application;
 
+import controllers.HabilidadJpaController;
+import controllers.exceptions.NonexistentEntityException;
+import entities.Habilidad;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Juan Diego
@@ -15,6 +25,34 @@ public class FrameHabilidadUpdate extends javax.swing.JFrame {
      */
     public FrameHabilidadUpdate() {
         initComponents();
+        this.listaHabs.setEnabled(false);
+        
+        this.textoError.setVisible(false);
+        this.textoVacio.setVisible(false);
+
+        this.nombreHabilidad.setVisible(false);
+        this.nombreHabilidadTexto.setVisible(false);
+
+        this.descripcionHabilidad.setVisible(false);
+        this.descripcionHabilidadTexto.setVisible(false);
+
+        this.botonModificar.setVisible(false);
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("pokemon");
+        HabilidadJpaController hc = new HabilidadJpaController(emf);
+        List<Habilidad> habs = hc.findHabilidadEntities();
+
+        DefaultTableModel m = new DefaultTableModel();
+
+        m.setColumnIdentifiers(new String[]{" Habilidad ID ", " Nombre Habilidad ", " Descripcion "});
+        for (Habilidad h : habs) {
+
+            Object[] objetos = {h.getIdHabilidad(), h.getNombreHabilidad(), h.getDescripcion()};
+            m.addRow(objetos);
+        }
+
+        listaHabs.setModel(m);
+        listaHabs.setVisible(true);
     }
 
     /**
@@ -26,21 +64,277 @@ public class FrameHabilidadUpdate extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        JPanel = new javax.swing.JPanel();
+        textoCodigo = new javax.swing.JLabel();
+        Codigo = new javax.swing.JTextField();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        listaHabs = new javax.swing.JTable();
+        Atras = new javax.swing.JButton();
+        OkeyBotton = new javax.swing.JButton();
+        botonModificar = new javax.swing.JButton();
+        textoError = new javax.swing.JLabel();
+        textoVacio = new javax.swing.JLabel();
+        nombreHabilidad = new javax.swing.JLabel();
+        nombreHabilidadTexto = new javax.swing.JTextField();
+        descripcionHabilidad = new javax.swing.JLabel();
+        descripcionHabilidadTexto = new javax.swing.JTextField();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        textoCodigo.setText("Introduce el id de la habilidad que quieras modificar");
+
+        listaHabs.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(listaHabs);
+
+        Atras.setText("Volver");
+        Atras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AtrasActionPerformed(evt);
+            }
+        });
+
+        OkeyBotton.setText("Ok");
+        OkeyBotton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                OkeyBottonActionPerformed(evt);
+            }
+        });
+
+        botonModificar.setText("Modificar");
+        botonModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonModificarActionPerformed(evt);
+            }
+        });
+
+        textoError.setText("Esa habilidad no esxiste , vuelva a introducir el id");
+
+        textoVacio.setText("Inserta al menos un dato para modificar la habilidad");
+
+        nombreHabilidad.setText("Nombre");
+
+        nombreHabilidadTexto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                nombreHabilidadTextoActionPerformed(evt);
+            }
+        });
+
+        descripcionHabilidad.setText("Descripcion");
+
+        javax.swing.GroupLayout JPanelLayout = new javax.swing.GroupLayout(JPanel);
+        JPanel.setLayout(JPanelLayout);
+        JPanelLayout.setHorizontalGroup(
+            JPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(JPanelLayout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(JPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(JPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(textoVacio)
+                        .addGroup(JPanelLayout.createSequentialGroup()
+                            .addGroup(JPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(textoCodigo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(textoError, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGap(31, 31, 31)
+                            .addGroup(JPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(OkeyBotton, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
+                                .addComponent(Codigo, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE))))
+                    .addGroup(JPanelLayout.createSequentialGroup()
+                        .addGroup(JPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(nombreHabilidad)
+                            .addComponent(descripcionHabilidad))
+                        .addGroup(JPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(JPanelLayout.createSequentialGroup()
+                                .addGap(43, 43, 43)
+                                .addComponent(botonModificar)
+                                .addGap(85, 85, 85)
+                                .addComponent(Atras, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(JPanelLayout.createSequentialGroup()
+                                .addGap(48, 48, 48)
+                                .addGroup(JPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(nombreHabilidadTexto, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(descripcionHabilidadTexto, javax.swing.GroupLayout.PREFERRED_SIZE, 247, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addGap(44, 44, 44)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 799, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(60, Short.MAX_VALUE))
+        );
+        JPanelLayout.setVerticalGroup(
+            JPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(JPanelLayout.createSequentialGroup()
+                .addGap(61, 61, 61)
+                .addGroup(JPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(textoCodigo)
+                    .addComponent(Codigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(JPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(OkeyBotton)
+                    .addComponent(textoError))
+                .addGap(18, 18, 18)
+                .addComponent(textoVacio)
+                .addGap(43, 43, 43)
+                .addGroup(JPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(nombreHabilidad)
+                    .addComponent(nombreHabilidadTexto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
+                .addGroup(JPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(descripcionHabilidad)
+                    .addComponent(descripcionHabilidadTexto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(JPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(Atras)
+                    .addComponent(botonModificar))
+                .addGap(50, 50, 50))
+            .addGroup(JPanelLayout.createSequentialGroup()
+                .addGap(29, 29, 29)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 564, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(149, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(JPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(JPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void AtrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AtrasActionPerformed
+        // TODO add your handling code here:
+
+        FrameHabilidad fh = new FrameHabilidad();
+        fh.setVisible(true);
+        System.out.println(fh);
+        this.dispose();
+    }//GEN-LAST:event_AtrasActionPerformed
+
+    private void OkeyBottonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_OkeyBottonActionPerformed
+        // TODO add your handling code here:
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("pokemon");
+
+        HabilidadJpaController gc = new HabilidadJpaController(emf);
+
+        String pk = Codigo.getText();
+        int key = 0;
+        try {
+            key = Integer.parseInt(pk);
+            this.textoError.setVisible(false);
+        } catch (NumberFormatException nfe) {
+            this.textoError.setVisible(true);
+        }
+
+        boolean seguir = false;
+        List<Habilidad> habs = gc.findHabilidadEntities();
+
+        for (Habilidad h : habs) {
+
+            if (h.getIdHabilidad() == key) {
+                seguir = true;
+            }
+
+        }
+
+        if (seguir) {
+            this.nombreHabilidad.setVisible(true);
+            this.nombreHabilidadTexto.setVisible(true);
+
+            this.descripcionHabilidad.setVisible(true);
+            this.descripcionHabilidadTexto.setVisible(true);
+
+            this.botonModificar.setVisible(true);
+        } else {
+            this.textoError.setVisible(true);
+
+            this.nombreHabilidad.setVisible(false);
+            this.nombreHabilidadTexto.setVisible(false);
+
+            this.descripcionHabilidad.setVisible(false);
+            this.descripcionHabilidadTexto.setVisible(false);
+
+            this.botonModificar.setVisible(false);
+        }
+    }//GEN-LAST:event_OkeyBottonActionPerformed
+
+    private void botonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonModificarActionPerformed
+
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("pokemon");
+
+        HabilidadJpaController hc = new HabilidadJpaController(emf);
+
+        int pk = Integer.parseInt(this.Codigo.getText());
+
+        Habilidad aux = hc.findHabilidad(pk);
+
+        if (nombreHabilidadTexto.getText().equals("")
+                && descripcionHabilidadTexto.getText().equals("")) {
+
+            this.textoVacio.setVisible(true);
+
+        } else {
+
+            if (nombreHabilidadTexto.getText().equals("")) {
+
+                aux.setNombreHabilidad(aux.getNombreHabilidad());
+
+            } else {
+
+                aux.setNombreHabilidad(nombreHabilidadTexto.getText());
+                nombreHabilidadTexto.setText("");
+            }
+
+            if (descripcionHabilidadTexto.getText().equals("")) {
+
+                aux.setDescripcion(aux.getDescripcion());
+
+            } else {
+
+                aux.setDescripcion(descripcionHabilidadTexto.getText());
+                descripcionHabilidadTexto.setText("");
+            }
+
+            try {
+                hc.edit(aux);
+            } catch (NonexistentEntityException ex) {
+                Logger.getLogger(FrameGeneracionUpdate.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (Exception ex) {
+                Logger.getLogger(FrameGeneracionUpdate.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+        }
+
+        List<Habilidad> habs = hc.findHabilidadEntities();
+
+        DefaultTableModel m = new DefaultTableModel();
+
+        m.setColumnIdentifiers(new String[]{" Habilidad ID ", " Nombre Habilidad ", " Descripcion "});
+        for (Habilidad h : habs) {
+
+            Object[] objetos = {h.getIdHabilidad(), h.getNombreHabilidad(), h.getDescripcion()};
+            m.addRow(objetos);
+        }
+
+        listaHabs.setModel(m);
+        listaHabs.setVisible(true);
+    }//GEN-LAST:event_botonModificarActionPerformed
+
+    private void nombreHabilidadTextoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombreHabilidadTextoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_nombreHabilidadTextoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +372,19 @@ public class FrameHabilidadUpdate extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton Atras;
+    private javax.swing.JTextField Codigo;
+    private javax.swing.JPanel JPanel;
+    private javax.swing.JButton OkeyBotton;
+    private javax.swing.JButton botonModificar;
+    private javax.swing.JLabel descripcionHabilidad;
+    private javax.swing.JTextField descripcionHabilidadTexto;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable listaHabs;
+    private javax.swing.JLabel nombreHabilidad;
+    private javax.swing.JTextField nombreHabilidadTexto;
+    private javax.swing.JLabel textoCodigo;
+    private javax.swing.JLabel textoError;
+    private javax.swing.JLabel textoVacio;
     // End of variables declaration//GEN-END:variables
 }

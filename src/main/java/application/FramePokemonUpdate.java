@@ -4,11 +4,12 @@
  */
 package application;
 
-
 import controllers.GeneracionJpaController;
+import controllers.HabilidadJpaController;
 import controllers.PokemonJpaController;
 import controllers.exceptions.NonexistentEntityException;
 import entities.Generacion;
+import entities.Habilidad;
 import entities.Pokemon;
 import java.math.BigDecimal;
 import java.time.DateTimeException;
@@ -48,49 +49,59 @@ public class FramePokemonUpdate extends javax.swing.JFrame {
 
         this.tipo1.setVisible(false);
         this.tipo1Texto.setVisible(false);
-        
+
         this.tipo2.setVisible(false);
         this.tipo2Texto.setVisible(false);
-        
+
         this.generacion.setVisible(false);
         this.generacionText.setVisible(false);
 
+        this.habilidadPokemon.setVisible(false);
+        this.habilidadPokemonTexto.setVisible(false);
+
         this.botonModificar.setVisible(false);
-        
+
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("pokemon");
         GeneracionJpaController gc = new GeneracionJpaController(emf);
-        
-        List<Generacion> l =gc.findGeneracionEntities();
-        
-        DefaultComboBoxModel modelo= new DefaultComboBoxModel();
-        
-        for (Generacion g : l) {
-            
-            modelo.addElement("Numero: "+g.getNumeroGeneracion()+" Nombre: "+g.getNombreRegion());
-        }
-        
-        this.generacionText.setModel(modelo);
-        
-        
-        
 
-        
+        List<Generacion> l = gc.findGeneracionEntities();
+
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel();
+
+        for (Generacion g : l) {
+
+            modelo.addElement("Numero: " + g.getNumeroGeneracion() + " Nombre: " + g.getNombreRegion());
+        }
+
+        this.generacionText.setModel(modelo);
 
         PokemonJpaController pc = new PokemonJpaController(emf);
-       
+
         List<Pokemon> pokemons = pc.findPokemonEntities();
 
         DefaultTableModel m = new DefaultTableModel();
 
-        m.setColumnIdentifiers(new String[]{" Pokemon ID "," Generacion "," Numero Pokedex ", " Nombre "," Tipo 1 "," Tipo 2 "});
-        for (Pokemon pok : pokemons) {
-            
-            Object[] objetos = {pok.getIdPokemon(),pok.getGeneracion(),pok.getNumeroPokedex(),pok.getNombre(),pok.getTipo1(),pok.getTipo2()};
+        m.setColumnIdentifiers(new String[]{" Pokemon ID ", " Generacion ", " Numero Pokedex ", " Nombre ", " Tipo 1 ", " Tipo 2 ", " Habilidad "});
+        for (Pokemon p : pokemons) {
+
+            Object[] objetos = {p.getIdPokemon(),p.getGeneracion().getNumeroGeneracion(), p.getNumeroPokedex(), p.getNombre(), p.getTipo1(), p.getTipo2(), p.getHabilidad().getNombreHabilidad()};
             m.addRow(objetos);
         }
 
         listaPokemon.setModel(m);
         listaPokemon.setVisible(true);
+
+        HabilidadJpaController hc = new HabilidadJpaController(emf);
+
+        List<Habilidad> habs = hc.findHabilidadEntities().stream().sorted((o1, o2) -> o1.getIdHabilidad().compareTo(o2.getIdHabilidad())).toList();
+
+        DefaultComboBoxModel modeloHab = new DefaultComboBoxModel();
+
+        for (Habilidad hab : habs) {
+            modeloHab.addElement(" Habilidad: " + hab.getNombreHabilidad());
+
+        }
+        this.habilidadPokemonTexto.setModel(modeloHab);
     }
 
     /**
@@ -122,6 +133,8 @@ public class FramePokemonUpdate extends javax.swing.JFrame {
         generacion = new javax.swing.JLabel();
         generacionText = new javax.swing.JComboBox<>();
         textoVacio = new javax.swing.JLabel();
+        habilidadPokemon = new javax.swing.JLabel();
+        habilidadPokemonTexto = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -181,6 +194,8 @@ public class FramePokemonUpdate extends javax.swing.JFrame {
 
         textoVacio.setText("Inserta al menos un dato para modificar el pokemon");
 
+        habilidadPokemon.setText("Habilidad");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -204,7 +219,8 @@ public class FramePokemonUpdate extends javax.swing.JFrame {
                                     .addGap(31, 31, 31)
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                         .addComponent(OkeyBotton, javax.swing.GroupLayout.PREFERRED_SIZE, 1, Short.MAX_VALUE)
-                                        .addComponent(Codigo, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE))))))
+                                        .addComponent(Codigo, javax.swing.GroupLayout.DEFAULT_SIZE, 67, Short.MAX_VALUE))))
+                            .addComponent(habilidadPokemon)))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(145, 145, 145)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -216,7 +232,8 @@ public class FramePokemonUpdate extends javax.swing.JFrame {
                             .addComponent(tipo1Texto, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
                             .addComponent(nombreTexto, javax.swing.GroupLayout.DEFAULT_SIZE, 247, Short.MAX_VALUE)
                             .addComponent(tipo2Texto)
-                            .addComponent(generacionText, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(generacionText, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(habilidadPokemonTexto, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addGap(49, 49, 49)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 799, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(25, Short.MAX_VALUE))
@@ -250,10 +267,14 @@ public class FramePokemonUpdate extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tipo2)
                     .addComponent(tipo2Texto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(48, 48, 48)
+                .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(generacion)
                     .addComponent(generacionText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(32, 32, 32)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(habilidadPokemon)
+                    .addComponent(habilidadPokemonTexto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(Atras)
@@ -326,12 +347,17 @@ public class FramePokemonUpdate extends javax.swing.JFrame {
 
             this.tipo1.setVisible(true);
             this.tipo1Texto.setVisible(true);
-            
+
             this.tipo2.setVisible(true);
             this.tipo2Texto.setVisible(true);
-        
+
             this.generacion.setVisible(true);
             this.generacionText.setVisible(true);
+            this.generacionText.setSelectedIndex(-1);
+
+            this.habilidadPokemon.setVisible(true);
+            this.habilidadPokemonTexto.setVisible(true);
+            this.habilidadPokemonTexto.setSelectedIndex(-1);
 
             this.botonModificar.setVisible(true);
         } else {
@@ -345,12 +371,15 @@ public class FramePokemonUpdate extends javax.swing.JFrame {
 
             this.tipo1.setVisible(false);
             this.tipo1Texto.setVisible(false);
-            
+
             this.tipo2.setVisible(false);
-        this.tipo2Texto.setVisible(false);
-        
-        this.generacion.setVisible(false);
-        this.generacionText.setVisible(false);
+            this.tipo2Texto.setVisible(false);
+
+            this.generacion.setVisible(false);
+            this.generacionText.setVisible(false);
+
+            this.habilidadPokemon.setVisible(false);
+            this.habilidadPokemonTexto.setVisible(false);
 
             this.botonModificar.setVisible(false);
         }
@@ -370,79 +399,90 @@ public class FramePokemonUpdate extends javax.swing.JFrame {
 
         Pokemon aux = pc.findPokemon(pk);
 
-       
-        if(nombreTexto.getText().equals("")&&
-                numeroPkdxTexto.getText().equals("")&&
-                tipo1Texto.getText().equals("")&&
-                tipo2Texto.getText().equals("")&&
-                generacionText.getSelectedIndex()==-1){
-        
-        
-        this.textoVacio.setVisible(true);
-        
-        
-        }else{
-        
-            
-        if(nombreTexto.getText().equals("")){
-        
-        aux.setNombre(aux.getNombre());
-        
-        }else{
-        
-            aux.setNombre(nombreTexto.getText());
-        
-        }
-        
-        if(numeroPkdxTexto.getText().equals("")){
-        
-        aux.setNumeroPokedex(aux.getNumeroPokedex());
-        
-        }else{
-            
-            try {
-             aux.setNumeroPokedex(Integer.parseInt(numeroPkdxTexto.getText()));   
-            } catch (NumberFormatException e) {
+        if (nombreTexto.getText().equals("")
+                && numeroPkdxTexto.getText().equals("")
+                && tipo1Texto.getText().equals("")
+                && tipo2Texto.getText().equals("")
+                && generacionText.getSelectedIndex() == -1
+                && habilidadPokemonTexto.getSelectedIndex()==-1) {
+
+            this.textoVacio.setVisible(true);
+
+        } else {
+
+            if (nombreTexto.getText().equals("")) {
+
+                aux.setNombre(aux.getNombre());
+
+            } else {
+
+                aux.setNombre(nombreTexto.getText());
+                nombreTexto.setText("");
+
             }
-            
-        
-        }
-        
-        
-        if(tipo1Texto.getText().equals("")){
-        
-        aux.setTipo1(aux.getTipo1());
-        
-        }else{
-        
-            aux.setTipo1(tipo1Texto.getText());
-        
-        }
-        
-        if(tipo2Texto.getText().equals("")){
-        
-        aux.setTipo2("none");
-        
-        }else{
-        
-            aux.setTipo2(tipo2Texto.getText());
-        
-        }
-        
-        if(generacionText.getSelectedIndex()==-1){
-        
-        aux.setGeneracion(aux.getGeneracion());
-        
-        }else{
-            GeneracionJpaController gc= new GeneracionJpaController(emf);
-            int gen =generacionText.getSelectedIndex()+1;
-            Generacion g=gc.findGeneracion(gen);
-            
-            aux.setGeneracion(g);
-        
-        
-        }
-        
+
+            if (numeroPkdxTexto.getText().equals("")) {
+
+                aux.setNumeroPokedex(aux.getNumeroPokedex());
+
+            } else {
+
+                try {
+                    aux.setNumeroPokedex(Integer.parseInt(numeroPkdxTexto.getText()));
+                } catch (NumberFormatException e) {
+                }
+                numeroPkdxTexto.setText("");
+            }
+
+            if (tipo1Texto.getText().equals("")) {
+
+                aux.setTipo1(aux.getTipo1());
+
+            } else {
+
+                aux.setTipo1(tipo1Texto.getText());
+                tipo1Texto.setText("");
+
+            }
+
+            if (tipo2Texto.getText().equals("")) {
+
+                aux.setTipo2(aux.getTipo2());
+
+            } else {
+
+                aux.setTipo2(tipo2Texto.getText());
+                tipo2Texto.setText("");
+            }
+
+            if (generacionText.getSelectedIndex() == -1) {
+
+                aux.setGeneracion(aux.getGeneracion());
+
+            } else {
+                GeneracionJpaController gc = new GeneracionJpaController(emf);
+                int gen = generacionText.getSelectedIndex();
+                Generacion g = gc.findGeneracionEntities().get(gen);
+
+                aux.setGeneracion(g);
+                generacionText.setSelectedIndex(-1);
+
+            }
+
+            if (habilidadPokemonTexto.getSelectedIndex() == -1) {
+
+                aux.setHabilidad(aux.getHabilidad());
+
+            } else {
+                HabilidadJpaController hc = new HabilidadJpaController(emf);
+                int hab = habilidadPokemonTexto.getSelectedIndex();
+                Habilidad h = hc.findHabilidadEntities().get(hab);
+
+                aux.setHabilidad(h);
+                habilidadPokemonTexto.setSelectedIndex(-1);
+
+            }
+
             try {
                 pc.edit(aux);
             } catch (NonexistentEntityException ex) {
@@ -450,20 +490,17 @@ public class FramePokemonUpdate extends javax.swing.JFrame {
             } catch (Exception ex) {
                 Logger.getLogger(FramePokemonUpdate.class.getName()).log(Level.SEVERE, null, ex);
             }
-        
-        
-        
-        
+
         }
 
-        List<Pokemon> pokemons = pc.findPokemonEntities();
+         List<Pokemon> pokemons = pc.findPokemonEntities();
 
         DefaultTableModel m = new DefaultTableModel();
 
-        m.setColumnIdentifiers(new String[]{" Pokemon ID "," Generacion "," Numero Pokedex ", " Nombre "," Tipo 1 "," Tipo 2 "});
-        for (Pokemon pok : pokemons) {
-            
-            Object[] objetos = {pok.getIdPokemon(),pok.getGeneracion(),pok.getNumeroPokedex(),pok.getNombre(),pok.getTipo1(),pok.getTipo2()};
+        m.setColumnIdentifiers(new String[]{" Pokemon ID ", " Generacion ", " Numero Pokedex ", " Nombre ", " Tipo 1 ", " Tipo 2 ", " Habilidad "});
+        for (Pokemon p : pokemons) {
+
+            Object[] objetos = {p.getIdPokemon(), p.getGeneracion().getNumeroGeneracion(), p.getNumeroPokedex(), p.getNombre(), p.getTipo1(), p.getTipo2(),p.getHabilidad().getNombreHabilidad()};
             m.addRow(objetos);
         }
 
@@ -515,6 +552,8 @@ public class FramePokemonUpdate extends javax.swing.JFrame {
     private javax.swing.JButton botonModificar;
     private javax.swing.JLabel generacion;
     private javax.swing.JComboBox<String> generacionText;
+    private javax.swing.JLabel habilidadPokemon;
+    private javax.swing.JComboBox<String> habilidadPokemonTexto;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable listaPokemon;
