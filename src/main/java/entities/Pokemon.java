@@ -27,6 +27,7 @@ import javax.persistence.Table;
     @NamedQuery(name = "Pokemon.findAll", query = "SELECT p FROM Pokemon p"),
     @NamedQuery(name = "Pokemon.findByIdPokemon", query = "SELECT p FROM Pokemon p WHERE p.idPokemon = :idPokemon"),
     @NamedQuery(name = "Pokemon.findByNumeroPokedex", query = "SELECT p FROM Pokemon p WHERE p.numeroPokedex = :numeroPokedex"),
+    @NamedQuery(name = "Pokemon.deleteAll", query = "DELETE FROM Pokemon"),
     @NamedQuery(name = "Pokemon.findByNombre", query = "SELECT p FROM Pokemon p WHERE p.nombre = :nombre"),
     @NamedQuery(name = "Pokemon.findByTipo1", query = "SELECT p FROM Pokemon p WHERE p.tipo1 = :tipo1"),
     @NamedQuery(name = "Pokemon.findByTipo2", query = "SELECT p FROM Pokemon p WHERE p.tipo2 = :tipo2")})

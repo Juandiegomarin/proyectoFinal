@@ -7,7 +7,12 @@ package application;
 import controllers.GeneracionJpaController;
 import controllers.HabilidadJpaController;
 import controllers.PokemonJpaController;
+import entities.Generacion;
+import entities.Habilidad;
+import entities.Pokemon;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,20 +22,33 @@ import java.time.LocalDate;
 
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Scanner;
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
 
 /**
  *
  * @author Juan Diego
  */
-public class FrameCopias <T> extends javax.swing.JFrame {
+public class FrameCopias<T> extends javax.swing.JFrame {
+
+    private static final EntityManagerFactory emf = Persistence.createEntityManagerFactory("pokemon");
+    private static final EntityManager em = emf.createEntityManager();
+    private static final GeneracionJpaController gc = new GeneracionJpaController(emf);
+    private static final HabilidadJpaController hc = new HabilidadJpaController(emf);
+    private static final PokemonJpaController pc = new PokemonJpaController(emf);
 
     /**
      * Creates new form FrameCopias
      */
     public FrameCopias() {
         initComponents();
+
+        this.listaCopias.setVisible(false);
+        this.restaurar.setVisible(false);
     }
 
     /**
@@ -46,6 +64,8 @@ public class FrameCopias <T> extends javax.swing.JFrame {
         botonRealizarCopia = new javax.swing.JButton();
         botonRestaurar = new javax.swing.JButton();
         botonVolver = new javax.swing.JButton();
+        listaCopias = new javax.swing.JComboBox<>();
+        restaurar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -57,6 +77,11 @@ public class FrameCopias <T> extends javax.swing.JFrame {
         });
 
         botonRestaurar.setText("Restaurar copia de seguridad");
+        botonRestaurar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonRestaurarActionPerformed(evt);
+            }
+        });
 
         botonVolver.setText("Volver");
         botonVolver.addActionListener(new java.awt.event.ActionListener() {
@@ -65,31 +90,45 @@ public class FrameCopias <T> extends javax.swing.JFrame {
             }
         });
 
+        restaurar.setText("Restaurar");
+        restaurar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                restaurarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap(558, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(botonRestaurar, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(botonRealizarCopia, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(545, 545, 545))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(botonVolver)
-                        .addGap(641, 641, 641))))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(botonVolver)
+                .addGap(323, 323, 323)
+                .addComponent(restaurar)
+                .addGap(243, 243, 243))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addGap(164, 164, 164)
+                .addComponent(botonRealizarCopia, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 522, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(listaCopias, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(botonRestaurar, javax.swing.GroupLayout.DEFAULT_SIZE, 267, Short.MAX_VALUE))
+                .addGap(150, 150, 150))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(116, 116, 116)
-                .addComponent(botonRealizarCopia, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(128, 128, 128)
-                .addComponent(botonRestaurar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 164, Short.MAX_VALUE)
-                .addComponent(botonVolver)
+                .addContainerGap(275, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botonRealizarCopia, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonRestaurar, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(97, 97, 97)
+                .addComponent(listaCopias, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(122, 122, 122)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(botonVolver)
+                    .addComponent(restaurar))
                 .addGap(113, 113, 113))
         );
 
@@ -112,66 +151,127 @@ public class FrameCopias <T> extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void botonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonVolverActionPerformed
-       
+
         FramePrincipal fm = new FramePrincipal();
         fm.setVisible(true);
         System.out.println(fm);
         this.dispose();
-        
-        
-        
+
+
     }//GEN-LAST:event_botonVolverActionPerformed
 
     private void botonRealizarCopiaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRealizarCopiaActionPerformed
-        
-        LocalDate fechaAhora=LocalDate.now();
-        LocalTime horaActual=LocalTime.now();
-        
-        
-        
-        String rutaCarpetaCopias="./copias";
-        Path carpetaCopias=Paths.get(rutaCarpetaCopias);
-        
+
+        LocalDate fechaAhora = LocalDate.now();
+        LocalTime horaActual = LocalTime.now();
+
+        String rutaCarpetaCopias = "./copias";
+        Path carpetaCopias = Paths.get(rutaCarpetaCopias);
+
         crearCarpeta(carpetaCopias);
-        
-        String nombreCarpetaGenerada=rutaCarpetaCopias+"/"+fechaAhora+"   "+horaActual.getHour()+"·"+horaActual.getMinute();
-        Path carpetaGeneradaAhora=Paths.get(nombreCarpetaGenerada);
-        
+
+        String nombreCarpetaGenerada = rutaCarpetaCopias + "/" + fechaAhora + "   " + horaActual.getHour() + "·" + horaActual.getMinute();
+        Path carpetaGeneradaAhora = Paths.get(nombreCarpetaGenerada);
+
         crearCarpeta(carpetaGeneradaAhora);
-        
-        
-        String rutaGeneracion=nombreCarpetaGenerada+"/generacion.csv";
-        Path ficheroGeneracion=Paths.get(rutaGeneracion);
-        
+
+        String rutaGeneracion = nombreCarpetaGenerada + "/generacion.csv";
+        Path ficheroGeneracion = Paths.get(rutaGeneracion);
+
         crearFichero(ficheroGeneracion);
-        
-        
-        
-        String rutaPokemon=nombreCarpetaGenerada+"/pokemon.csv";
-        Path ficheroPokemon=Paths.get(rutaPokemon);
-        
+
+        String rutaPokemon = nombreCarpetaGenerada + "/pokemon.csv";
+        Path ficheroPokemon = Paths.get(rutaPokemon);
+
         crearFichero(ficheroPokemon);
-        
-        
-        String rutaHabilidad=nombreCarpetaGenerada+"/habilidad.csv";
-        Path ficheroHabilidad=Paths.get(rutaHabilidad);
-        
+
+        String rutaHabilidad = nombreCarpetaGenerada + "/habilidad.csv";
+        Path ficheroHabilidad = Paths.get(rutaHabilidad);
+
         crearFichero(ficheroHabilidad);
-        
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("pokemon");
-        
-        GeneracionJpaController gc = new GeneracionJpaController(emf);
-        PokemonJpaController pc = new PokemonJpaController(emf);
-        HabilidadJpaController hc = new HabilidadJpaController(emf);
-        
-        
-        
-        
+
         escribirFichero(ficheroGeneracion, (List<T>) gc.findGeneracionEntities());
         escribirFichero(ficheroPokemon, (List<T>) pc.findPokemonEntities());
         escribirFichero(ficheroHabilidad, (List<T>) hc.findHabilidadEntities());
+
+        /*
         
+         EntityTransaction transaction = em.getTransaction();
+         transaction.begin();
+         
+         TypedQuery<Pokemon> queryBorrarPokemon = this.em.createNamedQuery("Pokemon.deleteAll", Pokemon.class);
+         TypedQuery<Generacion> queryBorrarGeneraciones = this.em.createNamedQuery("Generaciones.deleteAll", Generacion.class);
+         TypedQuery<Habilidad> queryBorrarHabilidades = this.em.createNamedQuery("Habilidades.deleteAll", Habilidad.class);
+         
+         queryBorrarPokemon.executeUpdate();
+         queryBorrarGeneraciones.executeUpdate();
+         queryBorrarHabilidades.executeUpdate();
+         
+         transaction.commit();
+        
+         */
+
     }//GEN-LAST:event_botonRealizarCopiaActionPerformed
+
+    private void botonRestaurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonRestaurarActionPerformed
+
+        String carpeta = "./copias";
+        File folder = new File(carpeta);
+        File[] files = new File[0];
+
+        if (folder.exists()) {
+            // Acceder a los archivos dentro de la carpeta de copias de seguridad
+            files = folder.listFiles();
+        }
+
+        if (files.length == 0) {
+
+        } else {
+
+            for (int i = 0; i < files.length; i++) {
+
+                this.listaCopias.addItem(files[i].getName());
+
+            }
+
+            this.listaCopias.setVisible(true);
+            this.restaurar.setVisible(true);
+
+        }
+
+    }//GEN-LAST:event_botonRestaurarActionPerformed
+
+    private void restaurarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_restaurarActionPerformed
+
+        
+
+        if (this.listaCopias.getSelectedIndex() != -1) {
+
+            String ruta = this.listaCopias.getSelectedItem().toString();
+
+            EntityTransaction transaction = em.getTransaction();
+            transaction.begin();
+
+            TypedQuery<Pokemon> queryBorrarPokemon = this.em.createNamedQuery("Pokemon.deleteAll", Pokemon.class);
+            TypedQuery<Generacion> queryBorrarGeneraciones = this.em.createNamedQuery("Generaciones.deleteAll", Generacion.class);
+            TypedQuery<Habilidad> queryBorrarHabilidades = this.em.createNamedQuery("Habilidades.deleteAll", Habilidad.class);
+
+            queryBorrarPokemon.executeUpdate();
+            queryBorrarGeneraciones.executeUpdate();
+            queryBorrarHabilidades.executeUpdate();
+
+            transaction.commit();
+            
+            leerFicheroGeneracion("./copias/"+this.listaCopias.getSelectedItem().toString()+"/generacion.csv");
+            leerFicheroHabilidad("./copias/"+this.listaCopias.getSelectedItem().toString()+"/habilidad.csv");
+            leerFicheroPokemon("./copias/"+this.listaCopias.getSelectedItem().toString()+"/pokemon.csv");
+            
+            
+
+        }
+
+
+    }//GEN-LAST:event_restaurarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -208,6 +308,107 @@ public class FrameCopias <T> extends javax.swing.JFrame {
         });
     }
     
+    public static void leerFicheroGeneracion(String ruta){
+    
+    
+        String linea = "";
+        String [] tokens;
+        try (Scanner datosFichero = new Scanner(new File(ruta), "UTF-8")) {
+            
+            while (datosFichero.hasNextLine()) {
+                System.out.println("Hola");
+                linea = datosFichero.nextLine();
+                tokens=linea.split(";");
+                
+                Generacion aux= new Generacion();
+                
+                aux.setNumeroGeneracion(Integer.parseInt(tokens[1]));
+                aux.setNumeroPokemon(Integer.parseInt(tokens[2]));
+                aux.setNombreRegion(tokens[3]);
+                
+                gc.create(aux);
+
+                
+
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    
+    
+    
+    }
+    
+    public static void leerFicheroHabilidad(String ruta){
+    
+        
+    
+        String linea = "";
+        String [] tokens;
+        try (Scanner datosFichero = new Scanner(new File(ruta), "UTF-8")) {
+            
+            while (datosFichero.hasNextLine()) {
+                
+                linea = datosFichero.nextLine();
+                tokens=linea.split(";");
+                
+                Habilidad aux= new Habilidad();
+                
+                aux.setNombreHabilidad(tokens[1]);
+                aux.setDescripcion(tokens[2]);
+                
+                
+                hc.create(aux);
+                
+                
+
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    
+    
+    
+    }
+    
+    public static void leerFicheroPokemon(String ruta){
+    
+    
+        String linea = "";
+        String [] tokens;
+        try (Scanner datosFichero = new Scanner(new File(ruta), "UTF-8")) {
+            
+            while (datosFichero.hasNextLine()) {
+                
+                linea = datosFichero.nextLine();
+                tokens=linea.split(";");
+                
+                 Pokemon aux= new Pokemon();
+                
+                 aux.setNumeroPokedex(Integer.parseInt(tokens[1]));
+                 aux.setNombre(tokens[2]);
+                 aux.setTipo1(tokens[3]);
+                 aux.setTipo2(tokens[4]);
+                 
+                 Generacion gaux = gc.findGeneracion(tokens[5]);
+                 Habilidad haux=hc.findHabilidad(tokens[6]);
+                 
+                 aux.setGeneracion(gaux);
+                 aux.setHabilidad(haux);
+                
+                 pc.create(aux);
+
+                
+
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+        }
+    
+    
+    
+    }
+
     public static void crearCarpeta(Path nombreCarpeta) {
 
         try {
@@ -218,8 +419,8 @@ public class FrameCopias <T> extends javax.swing.JFrame {
         }
 
     }
-    
-     public static void crearFichero(Path nombreFichero) {
+
+    public static void crearFichero(Path nombreFichero) {
 
         try {
             // Este método no crea el archivo si ya existe
@@ -229,8 +430,8 @@ public class FrameCopias <T> extends javax.swing.JFrame {
             System.out.println(e.toString());
         }
     }
-     
-     public void escribirFichero(Path p, List<T> lista) {
+
+    public void escribirFichero(Path p, List<T> lista) {
 
         String tmp = "";
         String linea = "";
@@ -259,5 +460,7 @@ public class FrameCopias <T> extends javax.swing.JFrame {
     private javax.swing.JButton botonRestaurar;
     private javax.swing.JButton botonVolver;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JComboBox<String> listaCopias;
+    private javax.swing.JButton restaurar;
     // End of variables declaration//GEN-END:variables
 }

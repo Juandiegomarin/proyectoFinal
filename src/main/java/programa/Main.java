@@ -29,18 +29,7 @@ public class Main {
         fm.setVisible(true);
         System.out.println(fm);
         
-//        pc.findPokemonEntities().forEach(System.out::println);
-//        
-//        
-//       
-//        Pokemon aux= pc.findPokemon(1);
-//        
-//        aux.setTipo2("Dragon");
-//        pc.edit(aux);
-//        
-//        
-//        System.out.println("--------------------------------------------------");
-//        pc.findPokemonEntities().forEach(System.out::println);
+
 //        
 //        
 //        

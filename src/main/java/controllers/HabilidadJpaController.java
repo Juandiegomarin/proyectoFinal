@@ -5,6 +5,7 @@
 package controllers;
 
 import controllers.exceptions.NonexistentEntityException;
+import entities.Generacion;
 import entities.Habilidad;
 import java.io.Serializable;
 import javax.persistence.Query;
@@ -62,6 +63,26 @@ public class HabilidadJpaController implements Serializable {
                 em.close();
             }
         }
+    }
+    
+     public Habilidad findHabilidad(String nombre) {
+
+        Habilidad h = new Habilidad();
+
+        List<Habilidad> habs = findHabilidadEntities();
+
+        for (Habilidad hab : habs) {
+
+            if (hab.getNombreHabilidad().equalsIgnoreCase(nombre)) {
+                
+                h.setIdHabilidad(hab.getIdHabilidad());
+                h.setNombreHabilidad(hab.getNombreHabilidad());
+                h.setDescripcion(hab.getDescripcion());
+                break;
+            }
+        }
+
+        return h;
     }
 
     public void edit(Habilidad habilidad) throws NonexistentEntityException, Exception {

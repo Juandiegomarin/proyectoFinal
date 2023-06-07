@@ -27,6 +27,7 @@ import javax.persistence.Table;
     @NamedQuery(name = "Generacion.findAll", query = "SELECT g FROM Generacion g"),
     @NamedQuery(name = "Generacion.findByIdGeneracion", query = "SELECT g FROM Generacion g WHERE g.idGeneracion = :idGeneracion"),
     @NamedQuery(name = "Generacion.findByNumeroGeneracion", query = "SELECT g FROM Generacion g WHERE g.numeroGeneracion = :numeroGeneracion"),
+    @NamedQuery(name = "Generaciones.deleteAll", query = "DELETE FROM Generacion"),
     @NamedQuery(name = "Generacion.findByNumeroPokemon", query = "SELECT g FROM Generacion g WHERE g.numeroPokemon = :numeroPokemon"),
     @NamedQuery(name = "Generacion.findByNombreRegion", query = "SELECT g FROM Generacion g WHERE g.nombreRegion = :nombreRegion")})
 public class Generacion implements Serializable {
@@ -115,9 +116,7 @@ public class Generacion implements Serializable {
 
     @Override
     public String toString() {
-        return  idGeneracion + ";" + numeroGeneracion + ";" + numeroPokemon + ";" + nombreRegion;
+        return idGeneracion + ";" + numeroGeneracion + ";" + numeroPokemon + ";" + nombreRegion;
     }
 
-    
-    
 }

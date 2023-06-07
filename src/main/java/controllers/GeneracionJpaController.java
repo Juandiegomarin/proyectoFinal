@@ -173,6 +173,28 @@ public class GeneracionJpaController implements Serializable {
         }
     }
 
+    public Generacion findGeneracion(String nombre) {
+
+        Generacion g = new Generacion();
+
+        List<Generacion> gens = findGeneracionEntities();
+
+        for (Generacion gen : gens) {
+
+            if (gen.getNombreRegion().equalsIgnoreCase(nombre)) {
+                
+                g.setIdGeneracion(gen.getIdGeneracion());
+                g.setNombreRegion(gen.getNombreRegion());
+                g.setNumeroGeneracion(gen.getNumeroGeneracion());
+                g.setNumeroPokemon(gen.getNumeroPokemon());
+                
+                break;
+            }
+        }
+
+        return g;
+    }
+
     public int getGeneracionCount() {
         EntityManager em = getEntityManager();
         try {
@@ -185,5 +207,5 @@ public class GeneracionJpaController implements Serializable {
             em.close();
         }
     }
-    
+
 }

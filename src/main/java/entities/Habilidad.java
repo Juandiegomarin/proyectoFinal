@@ -26,6 +26,7 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "Habilidad.findAll", query = "SELECT h FROM Habilidad h"),
     @NamedQuery(name = "Habilidad.findByIdHabilidad", query = "SELECT h FROM Habilidad h WHERE h.idHabilidad = :idHabilidad"),
+    @NamedQuery(name = "Habilidades.deleteAll", query = "DELETE FROM Habilidad"),
     @NamedQuery(name = "Habilidad.findByNombreHabilidad", query = "SELECT h FROM Habilidad h WHERE h.nombreHabilidad = :nombreHabilidad"),
     @NamedQuery(name = "Habilidad.findByDescripcion", query = "SELECT h FROM Habilidad h WHERE h.descripcion = :descripcion")})
 public class Habilidad implements Serializable {
